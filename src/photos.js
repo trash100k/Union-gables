@@ -5,6 +5,11 @@
    collected with Nimble + Exa). We preload each one and only swap it in on
    success — so if a host blocks hotlinking, the hand-built gradients and
    monograms underneath simply remain. Nothing ever shows a broken image.
+
+   Loading strategy: the hero (LCP) loads eagerly; everything else is
+   lazy-loaded via a single IntersectionObserver so each photo only starts
+   preloading as it nears the viewport. Where IntersectionObserver is
+   unavailable, we fall back to the previous idle/timeout pass.
    ========================================================================= */
 
 const CDN = 'https://www.uniongables.com/files-sbbasic/ba_uniongablesinn_us/'
@@ -46,6 +51,7 @@ function url(file, w, h) {
 
 // Preload, then reveal only on success; otherwise the gradient stays.
 function apply(el, src) {
+  if (!el || !src) return
   const img = new Image()
   img.onload = () => {
     el.style.setProperty('--photo', `url("${src}")`)
@@ -55,23 +61,53 @@ function apply(el, src) {
   img.src = src
 }
 
+// Build the full list of below-the-fold targets: { el, src }.
+function collectLazyTargets() {
+  const targets = []
+
+  Object.entries(ROOMS).forEach(([key, file]) => {
+    const el = document.querySelector(`.room__plate[data-room="${key}"]`)
+    if (el) targets.push({ el, src: url(file, 740, 900) })
+  })
+
+  // SECTIONS[0] is the hero, loaded eagerly — start at index 1.
+  SECTIONS.slice(1).forEach(({ sel, file, w, h }) => {
+    const el = document.querySelector(sel)
+    if (el) targets.push({ el, src: url(file, w, h) })
+  })
+
+  return targets
+}
+
 export function loadPhotos() {
-  // The hero is the LCP candidate — load it straight away.
+  if (typeof document === 'undefined') return
+
+  // The hero is the LCP candidate — load it straight away, never lazily.
   const hero = SECTIONS[0]
   const heroEl = document.querySelector(hero.sel)
   if (heroEl) apply(heroEl, url(hero.file, hero.w, hero.h))
 
-  // Everything below the fold waits for idle so it never races the hero.
-  const rest = () => {
-    Object.entries(ROOMS).forEach(([key, file]) => {
-      const el = document.querySelector(`.room__plate[data-room="${key}"]`)
-      if (el) apply(el, url(file, 740, 900))
-    })
-    SECTIONS.slice(1).forEach(({ sel, file, w, h }) => {
-      const el = document.querySelector(sel)
-      if (el) apply(el, url(file, w, h))
-    })
+  const targets = collectLazyTargets()
+  if (!targets.length) return
+
+  // Preferred path: viewport-based lazy loading.
+  if ('IntersectionObserver' in window) {
+    const byEl = new Map(targets.map((t) => [t.el, t.src]))
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return
+        const el = entry.target
+        obs.unobserve(el)
+        apply(el, byEl.get(el))
+        byEl.delete(el)
+      })
+    }, { rootMargin: '300px' })
+    targets.forEach((t) => observer.observe(t.el))
+    return
   }
+
+  // Fallback: no IntersectionObserver — load once idle so it never races the hero.
+  const rest = () => targets.forEach((t) => apply(t.el, t.src))
   if ('requestIdleCallback' in window) requestIdleCallback(rest, { timeout: 1500 })
   else setTimeout(rest, 200)
 }

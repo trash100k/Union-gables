@@ -1,0 +1,14 @@
+{
+  "name": "Union Gables Inn",
+  "short_name": "Union Gables",
+  "description": "A c.1901 Queen Anne Victorian inn on Union Avenue in Saratoga Springs, a block and a half from the race course.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0c1f16",
+  "background_color": "#0c1f16",
+  "icons": [
+    { "src": "/icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any maskable" },
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ]
+}

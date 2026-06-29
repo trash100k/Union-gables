@@ -1,20 +1,24 @@
 import './styles.css'
 import { loadPhotos } from './photos.js'
 import { initReserve } from './reserve.js'
+import { initLibbyReserve } from './libby-reserve.js'
 import { initSeason } from './season.js'
 import { initCursor } from './cursor.js'
+import { initRoomDetail } from './room-detail.js'
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /* ---- Real Union Gables photography (graceful fallback to gradients) ---- */
 loadPhotos()
 
-/* ---- Reservation flow + date-aware seasonal hero + aliveness cursor ---- */
+/* ---- Reservation flows + seasonal hero + aliveness cursor ---- */
 const reserve = initReserve()
+initLibbyReserve()
 initSeason()
 initCursor()
 
-/* ---- A room is a way in: a keyboard-operable button opens the reservation ---- */
+/* ---- A room is a way in: plate/name opens the detail drawer; the hint reserves ---- */
+const roomDetail = initRoomDetail((name) => reserve && reserve.open(name))
 document.querySelectorAll('.room').forEach((room) => {
   const name = room.querySelector('.room__name')?.textContent.trim()
   if (!name) return
@@ -23,9 +27,10 @@ document.querySelectorAll('.room').forEach((room) => {
   hint.className = 'room__reserve'
   hint.textContent = 'Reserve ' + name + ' →'
   room.appendChild(hint)
-  const go = () => reserve && reserve.open(name)
-  hint.addEventListener('click', go)
-  room.querySelector('.room__plate')?.addEventListener('click', go)
+  hint.addEventListener('click', () => reserve && reserve.open(name))
+  const openDetail = () => roomDetail.open(room)
+  room.querySelector('.room__plate')?.addEventListener('click', openDetail)
+  room.querySelector('.room__name')?.addEventListener('click', openDetail)
 })
 
 /* ---- Three.js hero — deferred off the critical path (decorative) ---- */

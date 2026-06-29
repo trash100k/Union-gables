@@ -28,6 +28,9 @@
 
 * { box-sizing: border-box; }
 
+/* the hidden attribute always wins over display rules */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 /* Keyboard focus — visible everywhere interactive */
@@ -1166,3 +1169,132 @@ main { position: relative; z-index: 2; }
   .reveal { opacity: 1; transform: none; }
   .grain { animation: none; }
 }
+
+/* ---------- Libby Supper Club modal (shares .modal / .rform) ---------- */
+#libby-modal .eyebrow { color: var(--gold-hi); }
+#libby-modal .rform__full textarea::placeholder { color: var(--ivory); opacity: 0.45; font-style: italic; }
+
+/* ---------- Room name is a way in ---------- */
+.room__name { cursor: pointer; }
+
+/* ---------- Room detail drawer (slides in; below the reserve modal) ---------- */
+.rdraw {
+  position: fixed; inset: 0; z-index: 68;
+  visibility: hidden; opacity: 0;
+  transition: opacity 0.45s var(--ease), visibility 0s linear 0.45s;
+}
+.rdraw.is-open { visibility: visible; opacity: 1; transition: opacity 0.45s var(--ease); }
+.rdraw__scrim {
+  position: absolute; inset: 0;
+  background: rgba(6, 15, 10, 0.72);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.rdraw__panel {
+  position: absolute; top: 0; right: 0;
+  width: min(560px, 100%); height: 100%;
+  overflow-y: auto;
+  background: linear-gradient(180deg, var(--green-700), var(--green-900));
+  border-left: 1px solid rgba(197,162,83,0.35);
+  box-shadow: -40px 0 120px -40px rgba(0,0,0,0.9);
+  padding: clamp(1.8rem, 5vw, 3rem);
+  transform: translateX(100%);
+  transition: transform 0.5s var(--ease);
+  outline: none;
+}
+.rdraw.is-open .rdraw__panel { transform: none; }
+.rdraw__close {
+  position: absolute; top: 0.7rem; right: 1rem;
+  background: none; border: none; color: var(--ivory-dim);
+  font-size: 1.8rem; line-height: 1; cursor: pointer;
+  transition: color 0.3s var(--ease);
+}
+.rdraw__close:hover { color: var(--gold); }
+.rdraw__tag { display: block; margin: 0.2rem 0 0.6rem; }
+.rdraw__title {
+  font-family: var(--ff-display); font-weight: 500;
+  font-size: clamp(2.2rem, 6vw, 3rem);
+  color: var(--ivory); margin: 0 0 1.4rem;
+}
+.rdraw__gallery {
+  position: relative; aspect-ratio: 4 / 3; width: 100%;
+  margin: 0 0 0.9rem;
+  border: 1px solid rgba(197,162,83,0.22);
+  background: radial-gradient(120% 120% at 40% 25%, #1c3b29, #0a1a12);
+  overflow: hidden;
+}
+.rdraw__slide {
+  position: absolute; inset: 0; margin: 0;
+  opacity: 0; transition: opacity 0.6s var(--ease); pointer-events: none;
+}
+.rdraw__slide.is-current { opacity: 1; pointer-events: auto; }
+.rdraw__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rdraw__slide.is-broken .rdraw__img { display: none; }
+.rdraw__nav { display: flex; align-items: center; justify-content: flex-end; gap: 0.9rem; margin: 0 0 1.6rem; }
+.rdraw__counter { font-family: var(--ff-eyebrow); letter-spacing: 0.18em; font-size: 0.62rem; color: var(--ivory-dim); }
+.rdraw__arrow {
+  appearance: none; width: 2.4rem; height: 2.4rem;
+  display: grid; place-items: center; background: none;
+  border: 1px solid rgba(197,162,83,0.35); border-radius: 50%;
+  color: var(--gold); font-size: 1.1rem; cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.rdraw__arrow:hover { background: var(--gold); color: var(--green-900); }
+.rdraw__desc { font-size: 1.05rem; color: var(--ivory-dim); margin: 0 0 2rem; }
+.rdraw__cta { width: 100%; text-align: center; }
+@media (prefers-reduced-motion: reduce) {
+  .rdraw, .rdraw__panel, .rdraw__slide { transition: opacity 0.001s linear; }
+  .rdraw__panel, .rdraw.is-open .rdraw__panel { transform: none; }
+}
+
+/* ---------- Before You Come (the practical counter) ---------- */
+.plan { background: var(--green-800); }
+.plan__title { color: var(--ivory); margin-bottom: 1.4rem; }
+.plan__note { color: var(--ivory-dim); font-size: 1.12rem; max-width: 46ch; margin: 0 0 3rem; }
+.plan__grid { display: grid; gap: 0; border-top: 1px solid rgba(197,162,83,0.2); }
+.plan__row {
+  display: grid; grid-template-columns: 4.4rem 1fr;
+  gap: clamp(1.2rem, 4vw, 3rem); align-items: baseline;
+  padding: 1.9rem 0; border-bottom: 1px solid rgba(159,179,162,0.1);
+}
+.plan__num { font-family: var(--ff-display); font-size: 1.5rem; color: var(--gold); font-style: italic; }
+.plan__label {
+  font-family: var(--ff-eyebrow); text-transform: uppercase;
+  letter-spacing: 0.22em; font-size: 0.74rem; color: var(--gold-hi); margin: 0 0 0.7rem;
+}
+.plan__text p { margin: 0; color: var(--ivory-dim); font-size: 1.04rem; line-height: 1.55; max-width: 56ch; }
+.plan__confirm {
+  font-family: var(--ff-eyebrow); text-transform: uppercase;
+  letter-spacing: 0.16em; font-size: 0.62rem; color: var(--sage);
+  white-space: nowrap; opacity: 0.8;
+}
+@media (max-width: 640px) {
+  .plan__row { grid-template-columns: 2.6rem 1fr; gap: 1rem; }
+  .plan__num { font-size: 1.2rem; }
+}
+
+/* ---------- Recognition (quiet engraved marks) ---------- */
+.recognition {
+  position: relative; z-index: 2; background: var(--green-900);
+  border-top: 1px solid rgba(197,162,83,0.14);
+  border-bottom: 1px solid rgba(197,162,83,0.14);
+}
+.recognition__inner {
+  max-width: 820px; margin: 0 auto;
+  padding: clamp(3rem, 7vh, 5rem) clamp(1.4rem, 5vw, 3rem); text-align: center;
+}
+.recognition__eyebrow {
+  font-family: var(--ff-eyebrow); text-transform: uppercase;
+  letter-spacing: 0.34em; font-size: 0.66rem; color: var(--gold); margin: 0 0 2.2rem;
+}
+.recognition__marks { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: clamp(1.4rem, 5vw, 3.4rem); }
+.recognition__mark {
+  font-family: var(--ff-display); font-variant: small-caps; letter-spacing: 0.06em;
+  font-size: clamp(1.05rem, 2.2vw, 1.4rem); color: var(--ivory);
+  position: relative; padding-bottom: 0.7rem;
+}
+.recognition__mark::after {
+  content: ""; position: absolute; left: 50%; bottom: 0;
+  transform: translateX(-50%); width: 2.4rem; height: 1px; background: var(--gold);
+}
+.recognition__line { margin: 2.2rem 0 0; font-style: italic; font-size: 1rem; color: var(--sage); }
+@media (max-width: 560px) { .recognition__marks { flex-direction: column; gap: 1.8rem; } }
