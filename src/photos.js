@@ -9,16 +9,32 @@
 
 const CDN = 'https://www.uniongables.com/files-sbbasic/ba_uniongablesinn_us/'
 
-// element selector -> { file, w, h } (w/h pick the inn's responsive variant)
-const ASSIGNMENTS = [
-  { sel: '.hero__photo',                    file: 'union-gables-inn_exterior_01.jpg', w: 1600 },
-  { sel: '.libby',                          file: 'union-gables-inn_dining_05.jpg',   w: 1600 },
-  { sel: '.room__plate[data-tone="annie"]', file: 'union-gables-inn_annie-room_02.jpg', w: 740, h: 900 },
-  { sel: '.room__plate[data-tone="kate"]',  file: 'union-gables-inn_kate-room_01.jpg',  w: 740, h: 900 },
-  { sel: '.room__plate[data-tone="cindy"]', file: 'union-gables-inn_cindy-room_01.jpg', w: 740, h: 900 },
-  { sel: '.grounds__art--garden',           file: 'union-gables-inn_garden_01.jpg',   w: 900 },
-  { sel: '.grounds__art--pool',             file: 'union-gables-inn_pool_02.jpg',      w: 740 },
-  { sel: '.grounds__art--porch',            file: 'porch.jpg',                        w: 740 },
+// Each named room -> its best CDN photograph.
+const ROOMS = {
+  annie:    'union-gables-inn_annie-room_02.jpg',
+  kate:     'union-gables-inn_kate-room_01.jpg',
+  cindy:    'union-gables-inn_cindy-room_01.jpg',
+  edward:   'union-gables-inn_edward-room_01.jpg',
+  bill:     'union-gables-inn_bill-room_02.jpg',
+  bruce:    'union-gables-inn_bruce-room_02.jpg',
+  linda:    'union-gables-inn_linda-room_02.jpg',
+  tom:      'union-gables-inn_tom-room_02.jpg',
+  jane:     'union-gables-inn_jane-room_04.jpg',
+  jody:     'union-gables-inn_jody-room_02.jpg',
+  michael:  'union-gables-michael-room_03.jpg',
+  henry:    'henry_suite.jpg',
+  carriage: 'ch_living_area.jpg',
+}
+
+// Section backgrounds and grounds plates.
+const SECTIONS = [
+  { sel: '.hero__photo',          file: 'union-gables-inn_exterior_01.jpg', w: 1600 },
+  { sel: '.libby',                file: 'union-gables-inn_dining_05.jpg',   w: 1600 },
+  { sel: '.season__photo',        file: 'union-gables-inn_saratoga-springs-racetrack.jpg', w: 1600 },
+  { sel: '.weddings__photo',      file: 'union-gables-inn_garden_01.jpg',   w: 1600 },
+  { sel: '.grounds__art--garden', file: 'union-gables-inn_garden_01.jpg',   w: 900 },
+  { sel: '.grounds__art--pool',   file: 'union-gables-inn_pool_02.jpg',      w: 740 },
+  { sel: '.grounds__art--porch',  file: 'porch.jpg',                        w: 740 },
 ]
 
 function url(file, w, h) {
@@ -28,17 +44,26 @@ function url(file, w, h) {
   return CDN + file + (q.length ? '?' + q.join('&') : '')
 }
 
+// Preload, then reveal only on success; otherwise the gradient stays.
+function apply(el, src) {
+  const img = new Image()
+  img.onload = () => {
+    el.style.setProperty('--photo', `url("${src}")`)
+    el.classList.add('has-photo')
+  }
+  img.onerror = () => {}
+  img.src = src
+}
+
 export function loadPhotos() {
-  ASSIGNMENTS.forEach(({ sel, file, w, h }) => {
+  // Rooms (square-ish crops to fit the 4:5 plates)
+  Object.entries(ROOMS).forEach(([key, file]) => {
+    const el = document.querySelector(`.room__plate[data-room="${key}"]`)
+    if (el) apply(el, url(file, 740, 900))
+  })
+  // Sections + grounds
+  SECTIONS.forEach(({ sel, file, w, h }) => {
     const el = document.querySelector(sel)
-    if (!el) return
-    const src = url(file, w, h)
-    const img = new Image()
-    img.onload = () => {
-      el.style.setProperty('--photo', `url("${src}")`)
-      el.classList.add('has-photo')
-    }
-    img.onerror = () => { /* keep the gradient underneath */ }
-    img.src = src
+    if (el) apply(el, url(file, w, h))
   })
 }
