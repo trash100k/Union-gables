@@ -1,9 +1,28 @@
 import './styles.css'
 import { initScene } from './scene.js'
 import { loadPhotos } from './photos.js'
+import { initReserve } from './reserve.js'
+import { initSeason } from './season.js'
 
 /* ---- Real Union Gables photography (graceful fallback to gradients) ---- */
 loadPhotos()
+
+/* ---- Reservation flow + date-aware seasonal hero ---- */
+const reserve = initReserve()
+initSeason()
+
+/* ---- A room is a way in: clicking one opens the reservation, pre-chosen ---- */
+document.querySelectorAll('.room').forEach((room) => {
+  const name = room.querySelector('.room__name')?.textContent.trim()
+  if (!name) return
+  const hint = document.createElement('span')
+  hint.className = 'room__reserve'
+  hint.textContent = 'Reserve ' + name + ' →'
+  room.appendChild(hint)
+  const go = () => reserve && reserve.open(name)
+  hint.addEventListener('click', go)
+  room.querySelector('.room__plate')?.addEventListener('click', go)
+})
 
 /* ---- Three.js hero ---- */
 const canvas = document.getElementById('gilded-canvas')
@@ -46,8 +65,9 @@ if ('IntersectionObserver' in window) {
   reveals.forEach((el) => el.classList.add('is-visible'))
 }
 
-/* ---- Smooth anchor scrolling with nav offset ---- */
+/* ---- Smooth anchor scrolling with nav offset (reserve triggers excepted) ---- */
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
+  if (link.hasAttribute('data-reserve')) return
   link.addEventListener('click', (e) => {
     const id = link.getAttribute('href')
     if (id.length < 2) return
@@ -58,6 +78,19 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     window.scrollTo({ top, behavior: 'smooth' })
   })
 })
+
+/* ---- Scroll-progress hairline ---- */
+const progress = document.getElementById('progress')
+if (progress) {
+  const setProgress = () => {
+    const h = document.documentElement
+    const max = h.scrollHeight - h.clientHeight
+    progress.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`
+  }
+  setProgress()
+  window.addEventListener('scroll', setProgress, { passive: true })
+  window.addEventListener('resize', setProgress)
+}
 
 /* ---- Year (kept at 1901 in spirit, current in fact) ---- */
 const yearEl = document.getElementById('year')

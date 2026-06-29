@@ -41,9 +41,11 @@
         <a href="#libby">Libby Supper Club</a>
         <a href="#season">The Season</a>
         <a href="#weddings">Weddings</a>
-        <a class="nav__reserve" href="#reserve">Reserve</a>
+        <a class="nav__reserve" href="#reserve" data-reserve>Reserve</a>
       </nav>
     </header>
+
+    <div class="progress" id="progress" aria-hidden="true"></div>
 
     <main id="top">
       <!-- HERO -->
@@ -56,13 +58,16 @@
             <span class="line"><span class="word">Gables</span></span>
           </h1>
           <p class="hero__lead reveal">
-            A Queen Anne mansion on Union Avenue — a block and a half from the
-            oldest racecourse in America. The porch has been waiting since 1901.
+            A Queen Anne mansion on Union Avenue — a block and a half from where
+            they've raced since 1863. The porch has been waiting since 1901.
           </p>
           <div class="hero__actions reveal">
-            <a class="btn btn--gold" href="#reserve">Reserve the Season</a>
+            <a class="btn btn--gold" href="#reserve" data-reserve>Reserve the Season</a>
             <a class="btn btn--ghost" href="#mansion">Wander In</a>
           </div>
+          <p class="hero__season reveal" id="hero-season" hidden>
+            <span class="hero__season-dot"></span><span class="hero__season-text"></span>
+          </p>
           <p class="hero__address reveal">55 Union Avenue &middot; The Historic District</p>
         </div>
         <a class="scroll-cue" href="#mansion" aria-label="Scroll">
@@ -415,7 +420,7 @@
             <span class="reserve__sep">&#10022;</span>
             <a class="reserve__line" href="#">55 Union Avenue, Saratoga Springs, NY 12866</a>
           </div>
-          <a class="btn btn--gold btn--lg" href="tel:+15185841558">Reserve Your Dates</a>
+          <a class="btn btn--gold btn--lg" href="#reserve" data-reserve>Reserve Your Dates</a>
         </div>
       </section>
     </main>
@@ -446,6 +451,67 @@
         <span>&copy; <span id="year">1901</span> Union Gables Inn</span>
       </div>
     </footer>
+
+    <!-- RESERVATION -->
+    <div class="modal" id="reserve-modal" aria-hidden="true">
+      <div class="modal__scrim" data-close></div>
+      <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="reserve-title">
+        <button class="modal__close" type="button" data-close aria-label="Close">&times;</button>
+
+        <div class="modal__step" data-step="form">
+          <p class="eyebrow">Reserve &middot; 55 Union Avenue</p>
+          <h2 class="display modal__title" id="reserve-title">Tell us when.</h2>
+          <p class="modal__lead">
+            We keep the house small, so we answer every note ourselves. If the dates are
+            open, they're yours.
+          </p>
+          <form class="rform" id="rform" novalidate>
+            <div class="rform__row">
+              <label>Arrive<input type="date" name="arrive" required /></label>
+              <label>Depart<input type="date" name="depart" required /></label>
+            </div>
+            <div class="rform__row">
+              <label>Guests
+                <select name="guests">
+                  <option>Two</option><option>One</option><option>Three</option>
+                  <option>Four</option><option>A small party</option>
+                </select>
+              </label>
+              <label>Room
+                <select name="room" id="rform-room">
+                  <option value="">No preference — surprise us</option>
+                  <option>The Annie</option><option>The Kate</option><option>The Cindy</option>
+                  <option>The Edward</option><option>The Bill</option><option>The Bruce</option>
+                  <option>The Linda</option><option>The Tom</option><option>The Jane</option>
+                  <option>The Jody</option><option>The Michael</option>
+                  <option>The Henry Suite</option><option>The Carriage House</option>
+                </select>
+              </label>
+            </div>
+            <div class="rform__row">
+              <label>Your name<input type="text" name="name" required autocomplete="name" /></label>
+              <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+            </div>
+            <label class="rform__full">Anything we should know
+              <textarea name="note" rows="2" placeholder="A fire lit early, a quiet table at Libby, a bowl for the dog."></textarea>
+            </label>
+            <p class="rform__error" id="rform-error" hidden>A few fields still need you.</p>
+            <button class="btn btn--gold btn--lg" type="submit">Send to the House</button>
+            <p class="rform__alt">Or call, and a person who knows the rooms will answer — <a href="tel:+15185841558">(518)&nbsp;584&middot;1558</a></p>
+          </form>
+        </div>
+
+        <div class="modal__step modal__step--done" data-step="done" hidden>
+          <p class="eyebrow">Kept, pending</p>
+          <h2 class="display modal__title">We've got it.</h2>
+          <p class="modal__lead">
+            Your note is on its way to the house. We'll write back by morning — sooner, if
+            the kettle's on.<br /><span class="modal__sign">— Union Gables</span>
+          </p>
+          <button class="btn btn--ghost" type="button" data-close>Back to the porch</button>
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="/src/main.js"></script>
   </body>

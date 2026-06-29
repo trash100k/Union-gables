@@ -884,6 +884,158 @@ main { position: relative; z-index: 2; }
   .reserve__sep { display: none; }
 }
 
+/* ---------- Scroll-progress hairline ---------- */
+.progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi));
+  z-index: 50;
+  pointer-events: none;
+  transition: transform 0.1s linear;
+}
+
+/* ---------- Seasonal hero line (the living calendar) ---------- */
+.hero__season {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 2rem 0 0;
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.64rem;
+  color: var(--ivory-dim);
+}
+.hero__season-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px 1px rgba(197,162,83,0.8);
+  animation: seasonPulse 2.6s var(--ease) infinite;
+}
+.hero__season-dot--silk {
+  background: var(--silk);
+  box-shadow: 0 0 12px 2px rgba(138,31,46,0.9);
+}
+@keyframes seasonPulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+/* ---------- Rooms: the quiet "reserve" affordance ---------- */
+.room { position: relative; cursor: pointer; }
+.room__plate { cursor: pointer; }
+.room__reserve {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.62rem;
+  color: var(--gold);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.room:hover .room__reserve,
+.room:focus-within .room__reserve { opacity: 1; transform: none; }
+
+/* ---------- Reservation modal ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease), visibility 0s linear 0.5s;
+}
+.modal.is-open { visibility: visible; opacity: 1; transition: opacity 0.5s var(--ease); }
+.modal__scrim {
+  position: absolute; inset: 0;
+  background: rgba(6, 15, 10, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.modal__panel {
+  position: relative;
+  width: min(620px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, var(--green-700), var(--green-900));
+  border: 1px solid rgba(197,162,83,0.35);
+  border-radius: 3px;
+  padding: clamp(1.8rem, 5vw, 3.2rem);
+  box-shadow: 0 40px 120px -40px rgba(0,0,0,0.9);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.6s var(--ease);
+}
+.modal.is-open .modal__panel { transform: none; }
+.modal__close {
+  position: absolute;
+  top: 0.7rem; right: 1rem;
+  background: none; border: none;
+  color: var(--ivory-dim);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.3s var(--ease);
+}
+.modal__close:hover { color: var(--gold); }
+.modal__title { font-size: clamp(2.4rem, 6vw, 3.4rem); color: var(--ivory); margin: 0.4rem 0 0.8rem; }
+.modal__lead { color: var(--ivory-dim); font-style: italic; margin: 0 0 1.8rem; }
+.modal__sign { color: var(--gold); font-style: normal; }
+.modal__step--done { text-align: center; padding: 1.5rem 0; }
+
+.rform { display: flex; flex-direction: column; gap: 1rem; }
+.rform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.rform label, .rform__full {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.6rem;
+  color: var(--gold);
+}
+.rform input, .rform select, .rform textarea {
+  font-family: var(--ff-body);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 1rem;
+  color: var(--ivory);
+  background: rgba(8, 22, 15, 0.6);
+  border: 1px solid rgba(197,162,83,0.25);
+  border-radius: 2px;
+  padding: 0.7em 0.8em;
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.rform input:focus, .rform select:focus, .rform textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(197,162,83,0.15);
+}
+.rform textarea { resize: vertical; }
+.rform option { color: #fff; background: var(--green-800); }
+.rform input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7) sepia(1) saturate(3) hue-rotate(5deg); }
+.rform .btn { margin-top: 0.6rem; text-align: center; cursor: pointer; }
+.rform__error { color: #e8a0a0; font-size: 0.85rem; margin: 0; font-style: italic; }
+.rform__alt { font-size: 0.9rem; color: var(--sage); margin: 0.4rem 0 0; text-align: center; }
+.rform__alt a { color: var(--gold-hi); border-bottom: 1px solid transparent; transition: border-color 0.3s; }
+.rform__alt a:hover { border-color: var(--gold); }
+
+@media (max-width: 540px) {
+  .rform__row { grid-template-columns: 1fr; }
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
