@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c1f16" />
+    <title>Union Gables — Saratoga Springs, est. 1901</title>
+    <meta
+      name="description"
+      content="A Queen Anne mansion on Union Avenue, a block and a half from the oldest racecourse in America. The porch has been waiting since 1901."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230c1f16'/%3E%3Cpath d='M50 20 L78 42 V78 H22 V42 Z' fill='none' stroke='%23c5a253' stroke-width='3'/%3E%3Ctext x='50' y='66' font-family='Georgia' font-size='30' fill='%23c5a253' text-anchor='middle'%3EUG%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <!-- Grain + vignette atmosphere -->
+    <div class="atmosphere" aria-hidden="true">
+      <div class="grain"></div>
+      <div class="vignette"></div>
+    </div>
+
+    <!-- Three.js hero canvas -->
+    <canvas id="gilded-canvas" aria-hidden="true"></canvas>
+
+    <!-- Navigation -->
+    <header class="nav" id="nav">
+      <a class="nav__brand" href="#top" aria-label="Union Gables, home">
+        <svg class="gable" viewBox="0 0 120 92" aria-hidden="true">
+          <path d="M60 6 L112 44 V86 H8 V44 Z" />
+          <path class="gable__door" d="M52 86 V60 a8 8 0 0 1 16 0 V86" />
+        </svg>
+        <span class="nav__wordmark">Union&nbsp;Gables</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#mansion">The Mansion</a>
+        <a href="#rooms">The Rooms</a>
+        <a href="#libby">Libby Supper Club</a>
+        <a href="#grounds">The Grounds</a>
+        <a class="nav__reserve" href="#reserve">Reserve</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero" id="hero">
+        <div class="hero__inner">
+          <p class="eyebrow reveal">Saratoga Springs &middot; New York &middot; Est. 1901</p>
+          <h1 class="hero__title">
+            <span class="line"><span class="word">Union</span></span>
+            <span class="line"><span class="word">Gables</span></span>
+          </h1>
+          <p class="hero__lead reveal">
+            A Queen Anne mansion on Union Avenue — a block and a half from the
+            oldest racecourse in America. The porch has been waiting since 1901.
+          </p>
+          <div class="hero__actions reveal">
+            <a class="btn btn--gold" href="#reserve">Reserve the Season</a>
+            <a class="btn btn--ghost" href="#mansion">Wander In</a>
+          </div>
+          <p class="hero__address reveal">55 Union Avenue &middot; The Historic District</p>
+        </div>
+        <a class="scroll-cue" href="#mansion" aria-label="Scroll">
+          <span></span>
+        </a>
+      </section>
+
+      <!-- MARQUEE -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Six furlongs to the wire</span><span class="dot">&#10022;</span>
+          <span>The Spa City</span><span class="dot">&#10022;</span>
+          <span>Gilded Age, intact</span><span class="dot">&#10022;</span>
+          <span>An acre of gardens</span><span class="dot">&#10022;</span>
+          <span>Breakfast cooked to order</span><span class="dot">&#10022;</span>
+          <span>Est. 1901</span><span class="dot">&#10022;</span>
+          <span>Six furlongs to the wire</span><span class="dot">&#10022;</span>
+          <span>The Spa City</span><span class="dot">&#10022;</span>
+          <span>Gilded Age, intact</span><span class="dot">&#10022;</span>
+          <span>An acre of gardens</span><span class="dot">&#10022;</span>
+          <span>Breakfast cooked to order</span><span class="dot">&#10022;</span>
+          <span>Est. 1901</span><span class="dot">&#10022;</span>
+        </div>
+      </div>
+
+      <!-- THE MANSION -->
+      <section class="section mansion" id="mansion">
+        <div class="section__label reveal"><span>I</span> The Mansion</div>
+        <div class="mansion__grid">
+          <div class="mansion__lede reveal">
+            <h2 class="display">Old Saratoga,<br />kept exactly.</h2>
+          </div>
+          <div class="mansion__body reveal">
+            <p class="drop">
+              <span class="dropcap">B</span>uilt at the turn of the century, when the
+              racing crowd came north by private rail and the town wore its money
+              quietly. Three turrets, a wraparound porch, and rooms dressed in the
+              period antiques they were furnished with — nothing reproduced, nothing
+              rushed.
+            </p>
+            <p>
+              Beyond the parlor: better than an acre of perennial gardens, a quiet run
+              of fountains, and a seasonal Romanesque pool that asks only that you do
+              very little. Mornings arrive as a full breakfast, cooked to order. After­noons
+              as something just out of the oven.
+            </p>
+            <ul class="ledger">
+              <li><span class="ledger__num">1901</span> Queen Anne Victorian, on the National Register</li>
+              <li><span class="ledger__num">1.5</span> blocks to the Saratoga Race Course</li>
+              <li><span class="ledger__num">125+</span> restaurants, stages &amp; galleries on foot</li>
+              <li><span class="ledger__num">1</span> porch, and all the time you need on it</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- THE ROOMS -->
+      <section class="section rooms" id="rooms">
+        <div class="section__label reveal"><span>II</span> The Rooms</div>
+        <h2 class="display rooms__title reveal">A handful of rooms,<br />each with a name.</h2>
+        <p class="rooms__note reveal">
+          Oversized chambers and suites, every one with its own bath, a natural-gas
+          fireplace, and antiques chosen for the room rather than the catalogue.
+        </p>
+        <div class="rooms__grid">
+          <article class="room reveal">
+            <div class="room__plate" data-tone="annie"><span class="room__mono">A</span></div>
+            <h3 class="room__name">The Annie</h3>
+            <p class="room__desc">
+              The turret room on the west side. Tall windows on three sides, a king
+              under luxury linen, marble-topped tables and wall-to-wall orientals. The
+              light arrives early and stays late.
+            </p>
+            <span class="room__tag">King &middot; Turret &middot; Fireplace</span>
+          </article>
+          <article class="room reveal">
+            <div class="room__plate" data-tone="kate"><span class="room__mono">K</span></div>
+            <h3 class="room__name">The Kate</h3>
+            <p class="room__desc">
+              A corner suite with a sitting nook and a clawfoot soak. Deep greens, a
+              quiet fireplace, and the garden two storeys down. The one guests ask for
+              by name a year out.
+            </p>
+            <span class="room__tag">Suite &middot; Garden View &middot; Soaking Tub</span>
+          </article>
+          <article class="room reveal">
+            <div class="room__plate" data-tone="cindy"><span class="room__mono">C</span></div>
+            <h3 class="room__name">The Cindy</h3>
+            <p class="room__desc">
+              Intimate and warm, with a four-poster and a reading chair set to the
+              afternoon sun. Closest to the porch, and the smell of baking that drifts
+              up around four o'clock.
+            </p>
+            <span class="room__tag">Queen &middot; Four-Poster &middot; Porchside</span>
+          </article>
+        </div>
+        <p class="rooms__pets reveal">
+          Eight rooms keep a place for the dog. Ask, and we'll make the bed for two and a half.
+        </p>
+      </section>
+
+      <!-- LIBBY SUPPER CLUB -->
+      <section class="section libby" id="libby">
+        <div class="libby__inner">
+          <div class="section__label section__label--light reveal"><span>III</span> Libby Supper Club</div>
+          <h2 class="display libby__title reveal">Six courses.<br />One seating.</h2>
+          <p class="libby__lead reveal">
+            Dinner kept the old way — a single prix fixe that turns over with the month
+            and bends to whatever the regional growers send. New American at heart, with
+            an ear for French, Italian, and plain rustic cooking. Pescatarian and
+            vegetarian nights are set aside each month.
+          </p>
+          <div class="libby__meta reveal">
+            <div>
+              <span class="libby__k">The Format</span>
+              <span class="libby__v">Six courses, prix fixe, seasonal</span>
+            </div>
+            <div>
+              <span class="libby__k">The Cellar</span>
+              <span class="libby__v">A short, deliberate list of wine, beer &amp; two cocktails</span>
+            </div>
+            <div>
+              <span class="libby__k">The Room</span>
+              <span class="libby__v">Inside the mansion at 55 Union Avenue</span>
+            </div>
+          </div>
+          <a class="btn btn--gold reveal" href="mailto:dine@libbysupperclub.com">A Table at Libby</a>
+        </div>
+      </section>
+
+      <!-- THE GROUNDS -->
+      <section class="section grounds" id="grounds">
+        <div class="section__label reveal"><span>IV</span> The Grounds</div>
+        <div class="grounds__grid">
+          <figure class="grounds__card grounds__card--tall reveal">
+            <div class="grounds__art grounds__art--garden"></div>
+            <figcaption><strong>The Gardens</strong>An acre of perennials, kept in bloom from the first warm week to the last.</figcaption>
+          </figure>
+          <figure class="grounds__card reveal">
+            <div class="grounds__art grounds__art--pool"></div>
+            <figcaption><strong>The Pool</strong>Romanesque, seasonal, and shaded by the kind of trees that take a century.</figcaption>
+          </figure>
+          <figure class="grounds__card reveal">
+            <div class="grounds__art grounds__art--porch"></div>
+            <figcaption><strong>The Porch</strong>Wraparound, west-facing, and entirely the point of the place.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- RESERVE -->
+      <section class="section reserve" id="reserve">
+        <div class="reserve__inner reveal">
+          <p class="eyebrow eyebrow--center">The season is short</p>
+          <h2 class="display reserve__title">The porch is not.</h2>
+          <p class="reserve__copy">
+            We don't oversell, and we keep the house small on purpose. If the dates are
+            open, they're yours.
+          </p>
+          <div class="reserve__contact">
+            <a class="reserve__line" href="tel:+15185841558">(518)&nbsp;584&middot;1558</a>
+            <span class="reserve__sep">&#10022;</span>
+            <a class="reserve__line" href="#">55 Union Avenue, Saratoga Springs, NY 12866</a>
+          </div>
+          <a class="btn btn--gold btn--lg" href="tel:+15185841558">Reserve Your Dates</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <svg class="gable gable--lg" viewBox="0 0 120 92" aria-hidden="true">
+            <path d="M60 6 L112 44 V86 H8 V44 Z" />
+            <path class="gable__door" d="M52 86 V60 a8 8 0 0 1 16 0 V86" />
+          </svg>
+          <span class="footer__wordmark">Union Gables</span>
+          <span class="footer__tag">Voted Best of the Saratoga Region</span>
+        </div>
+        <nav class="footer__nav" aria-label="Footer">
+          <a href="#mansion">The Mansion</a>
+          <a href="#rooms">The Rooms</a>
+          <a href="#libby">Libby Supper Club</a>
+          <a href="#grounds">The Grounds</a>
+          <a href="#reserve">Reserve</a>
+        </nav>
+      </div>
+      <div class="footer__base">
+        <span>55 Union Avenue &middot; Saratoga Springs, New York 12866</span>
+        <span>(518) 584&middot;1558</span>
+        <span>&copy; <span id="year">1901</span> Union Gables Inn</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
