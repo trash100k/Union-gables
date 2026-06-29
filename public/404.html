@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Not found — Union Gables Inn</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=EB+Garamond:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root { --green: #0c1f16; --gold: #c5a253; --ivory: #f2ead7; }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        background: var(--green);
+        color: var(--ivory);
+        font-family: "EB Garamond", Georgia, serif;
+        display: flex; align-items: center; justify-content: center;
+        text-align: center; padding: 2rem; line-height: 1.6;
+      }
+      .wrap { max-width: 30rem; }
+      .mark { width: 72px; height: 72px; margin: 0 auto 2rem; display: block; }
+      h1 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-weight: 500; font-size: clamp(1.8rem, 5vw, 2.6rem);
+        line-height: 1.15; margin: 0 0 1rem; color: var(--ivory);
+      }
+      p { margin: 0 0 2rem; color: rgba(242, 234, 215, 0.78); font-size: 1.1rem; }
+      a.back {
+        color: var(--gold); text-decoration: none; font-size: 1.1rem;
+        border-bottom: 1px solid rgba(197, 162, 83, 0.5);
+        padding-bottom: 2px; transition: border-color 0.2s ease;
+      }
+      a.back:hover { border-bottom-color: var(--gold); }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Union Gables Inn">
+        <rect width="100" height="100" fill="#0c1f16" />
+        <path d="M50 20 L78 42 V78 H22 V42 Z" fill="none" stroke="#c5a253" stroke-width="3" />
+        <text x="50" y="66" font-family="Georgia, serif" font-size="30" fill="#c5a253" text-anchor="middle">UG</text>
+      </svg>
+      <h1>That room doesn't exist. The others do.</h1>
+      <p>You have wandered down a hallway that was never built. No matter.</p>
+      <a class="back" href="/">Back to the house</a>
+    </main>
+  </body>
+</html>

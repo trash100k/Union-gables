@@ -1,0 +1,96 @@
+{
+  "source": "https://www.uniongables.com",
+  "cdnBase": "https://www.uniongables.com/files-sbbasic/ba_uniongablesinn_us/",
+  "note": "Full-resolution originals. Append ?w=<px>&h=<px> for the site's responsive variants. Collected via Nimble + Exa across the gallery, lodging, dining and grounds pages.",
+  "collected": "2026-06-29",
+  "count": 69,
+  "categories": {
+    "exterior": [
+      "union-gables-inn_exterior_01.jpg",
+      "logo/union-gables-inn_exterior_01.jpg",
+      "ug_side_angle2.jpg",
+      "ug_side_angle3.jpg",
+      "ug_sign.jpg"
+    ],
+    "rooms": [
+      "union-gables-inn_annie-room_02.jpg",
+      "union-gables-inn_bill-room_02.jpg",
+      "bill_bathroom.jpg",
+      "union-gables-inn_bruce-room_02.jpg",
+      "bruce1.jpg",
+      "bruce2.jpg",
+      "union-gables-inn_cindy-room_01.jpg",
+      "cindy3.jpg",
+      "union-gables-inn_edward-room_01.jpg",
+      "edward.jpg",
+      "union-gables-inn_jane-room_04.jpg",
+      "union-gables-inn_jody-room_02.jpg",
+      "union-gables-inn_kate-room_01.jpg",
+      "union-gables-inn_kate-room_03.jpg",
+      "kate.jpg",
+      "union-gables-inn_linda-room_02.jpg",
+      "linda1.jpg",
+      "linda2.jpg",
+      "union-gables-inn_tom-room_02.jpg",
+      "tom.jpg",
+      "tom2.jpg",
+      "union-gables-michael-room_03.jpg",
+      "michael_room.jpg",
+      "henry_suite.jpg",
+      "henry_suite1.jpg",
+      "henry_suite2.jpg",
+      "henry_suite3.jpg",
+      "henry_suite_bathroom.jpg",
+      "ch_bedroom1.jpg",
+      "ch_living_area.jpg",
+      "img_3082.jpg",
+      "img_9131.jpg",
+      "img_9166.jpg"
+    ],
+    "diningAndInterior": [
+      "union-gables-inn_dining_03.jpg",
+      "union-gables-inn_dining_05.jpg",
+      "union-gables-inn_dining_08.jpg",
+      "dining_area2.jpg",
+      "dining_room1.jpg",
+      "lobby4.jpg",
+      "lobby5.jpg",
+      "billiard_room1.jpg",
+      "billiard_room2.jpg",
+      "billiards_room.jpg",
+      "union-gables-inn_house-amenities_02.jpg",
+      "libbyiglogo.jpg"
+    ],
+    "grounds": [
+      "union-gables-inn_garden_01.jpg",
+      "flowers_.jpg",
+      "side_lawn.jpg",
+      "side_lawn2.jpg",
+      "porch.jpg",
+      "outside_patio.jpg",
+      "outside_patio1.jpg",
+      "union-gables-inn_outdoor-events_01-min.jpg",
+      "ug_fountain.jpg",
+      "ug_fountain1.jpg",
+      "ug_fountain2.jpg",
+      "ug_sign_and_fountain.jpg"
+    ],
+    "pool": [
+      "union-gables-inn_pool_02.jpg",
+      "pool.jpg",
+      "pool2.jpg",
+      "pool3.jpg",
+      "pool4.jpg"
+    ],
+    "racetrack": [
+      "union-gables-inn_saratoga-raceway.jpg",
+      "union-gables-inn_saratoga-springs-racetrack.jpg"
+    ],
+    "brand": [
+      "logo/_union-gables-inn-saratoga-springs.png",
+      "logo/_logo-xs_union-gables-inn-saratoga-springs.png",
+      "logo/_map-pin_union-gables-inn-saratoga-springs.png",
+      "logo/_favicon_union-gables-inn-saratoga-springs.png"
+    ]
+  }
+}

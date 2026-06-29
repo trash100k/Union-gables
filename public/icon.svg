@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Union Gables Inn">
+  <rect width="512" height="512" fill="#0c1f16" />
+  <path d="M256 102 L399 215 V410 H113 V215 Z" fill="none" stroke="#c5a253" stroke-width="16" stroke-linejoin="round" />
+  <text x="256" y="338" font-family="Georgia, 'Times New Roman', serif" font-size="150" font-weight="500" fill="#c5a253" text-anchor="middle">UG</text>
+</svg>
