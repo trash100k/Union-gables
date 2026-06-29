@@ -44,6 +44,19 @@ npm run preview  # preview the production build
 
 Requires Node 18+. The build emits a fully static `dist/` that runs on any host.
 
+## Photography
+
+Every real photo on the live inn site was catalogued with **Nimble** (site map +
+page extraction) and **Exa** (cross-check) into [`public/photo-manifest.json`](public/photo-manifest.json)
+— 69 images across exterior, rooms, dining, grounds, pool and the racetrack, plus the
+brand marks, all on the inn's own CDN.
+
+`src/photos.js` layers a curated selection straight from that CDN into the hero, the
+rooms, the grounds and Libby. Each image is preloaded and only swapped in on success,
+so if a host ever blocks hotlinking the hand-built gradients underneath simply remain —
+nothing renders a broken image. To self-host instead, download the files in the manifest
+into `public/assets/photos/` and point `CDN` in `src/photos.js` at `/assets/photos/`.
+
 ## Notes on accessibility & performance
 
 - Honors `prefers-reduced-motion`: the scene stills, animations collapse.

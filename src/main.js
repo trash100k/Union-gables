@@ -1,5 +1,9 @@
 import './styles.css'
 import { initScene } from './scene.js'
+import { loadPhotos } from './photos.js'
+
+/* ---- Real Union Gables photography (graceful fallback to gradients) ---- */
+loadPhotos()
 
 /* ---- Three.js hero ---- */
 const canvas = document.getElementById('gilded-canvas')
