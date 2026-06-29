@@ -108,6 +108,15 @@
   </head>
   <body>
     <a class="skip-link" href="#top">Skip to content</a>
+
+    <!-- Intro veil: first-paint cover, lifts after load; removed from DOM when done. -->
+    <div id="intro" class="intro" aria-hidden="true" role="presentation">
+      <svg class="intro__mark" viewBox="0 0 120 92" aria-hidden="true" focusable="false">
+        <path class="intro__gable" d="M60 6 L112 44 V86 H8 V44 Z" />
+        <path class="intro__door" d="M52 86 V60 a8 8 0 0 1 16 0 V86" />
+        <text class="intro__ug" x="60" y="72" text-anchor="middle">UG</text>
+      </svg>
+    </div>
     <!-- Grain + vignette atmosphere -->
     <div class="atmosphere" aria-hidden="true">
       <div class="grain"></div>
@@ -242,7 +251,7 @@
       <!-- RECOGNITION -->
       <section class="recognition" id="recognition">
         <div class="recognition__inner reveal">
-          <p class="recognition__eyebrow">In the record</p>
+          <h2 class="recognition__eyebrow">In the record</h2>
           <div class="recognition__marks">
             <span class="recognition__mark">Voted Best of the Saratoga Region</span>
             <span class="recognition__mark">TripAdvisor Award of Excellence</span>
@@ -492,6 +501,55 @@
         </div>
       </section>
 
+      <!-- THE GALLERY -->
+      <section class="section gallery" id="gallery">
+        <div class="section__label reveal"><span>V&middot;</span> In Pictures</div>
+        <h2 class="display rooms__title reveal">The house, in pictures.</h2>
+        <div class="gallery__grid reveal" role="list" aria-label="Photographs of the house and grounds"></div>
+      </section>
+
+      <!-- JOURNAL / FROM THE HOUSE -->
+      <section class="section journal" id="journal">
+        <div class="section__label reveal">From the House</div>
+        <h2 class="display journal__title reveal">From the house.</h2>
+        <p class="journal__note reveal">
+          A page of the innkeepers' notebook, kept irregularly, as such things are.
+        </p>
+        <div class="journal__grid">
+          <article class="journal__entry reveal">
+            <span class="journal__kicker">August &middot; The Meet</span>
+            <h3 class="journal__head">The early post.</h3>
+            <p>
+              The early post pulls the house up before the kitchen does — boots on the
+              stair, a thermos filled at the door, the porch already taken by people who
+              mean to walk the block and a half to the gate. Coffee first, the first race
+              after. There is no hurrying either one, and no need to.
+            </p>
+          </article>
+          <article class="journal__entry reveal">
+            <span class="journal__kicker">January &middot; The Quiet Months</span>
+            <h3 class="journal__head">The case for the off-season.</h3>
+            <p>
+              The track is dark and the streets belong to whoever is out in them, which
+              in January is almost no one. The mineral springs run as they have since
+              before the horses; the historic district keeps its snow; the fires are lit
+              by mid-afternoon and stay that way. We have always thought the quiet months
+              were the better-kept secret, and we are in no rush to correct it.
+            </p>
+          </article>
+          <article class="journal__entry reveal">
+            <span class="journal__kicker">A Saturday &middot; At Libby</span>
+            <h3 class="journal__head">One seating, by candlelight.</h3>
+            <p>
+              Six courses, one seating, the room lit low and the menu settled days
+              earlier with whatever the growers sent. The table fills, the candles do the
+              rest, and the evening keeps its own time. Nobody asks for the check until
+              well after they should.
+            </p>
+          </article>
+        </div>
+      </section>
+
       <!-- WEDDINGS & GATHERINGS -->
       <section class="section weddings" id="weddings">
         <div class="weddings__photo" aria-hidden="true"></div>
@@ -632,6 +690,8 @@
           <a href="#libby">Libby Supper Club</a>
           <a href="#season">The Season</a>
           <a href="#grounds">The Grounds</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#journal">From the House</a>
           <a href="#weddings">Weddings</a>
           <a href="#reserve">Reserve</a>
         </nav>

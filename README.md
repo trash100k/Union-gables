@@ -1,71 +1,179 @@
-# Union Gables
+# Union Gables Inn
 
-A redesign of [uniongables.com](https://www.uniongables.com) — the Union Gables Inn,
-a c.1901 Queen Anne Victorian mansion on Union Avenue in Saratoga Springs, NY, a block
-and a half from the oldest racecourse in America.
+A living, breathing Saratoga Springs address — rendered for the web.
 
-The brief: turn a dead brochure site into a *living, breathing* one that speaks to old
-money New York — a Three.js wonderland that's quietly confident rather than begging for
-the booking.
+Union Gables is a c.1901 Queen Anne Victorian bed-and-breakfast at 55 Union Avenue,
+a block and a half from the race course, home to the **Libby Supper Club**. This is
+its website: a single, slow-scrolling page built to feel like the property itself —
+old-money Saratoga, premiere by craft rather than by claim. It states nothing it
+hasn't earned. The work was developed from deep research into the real inn and a
+written design brief, then expanded across several sprints.
 
-## What's here
+---
 
-A single-page, scroll-driven site built with **Vite** and **Three.js**.
+## Features
 
-- **Gilded-dust hero** — two layered Three.js point fields drift on stacked sine
-  "breaths," twinkle, and answer to cursor and scroll, with a faint chandelier ring and
-  exponential fog. Sunlight in a grand parlor; fireflies over the gardens at dusk.
-  (`src/scene.js`)
-- **Old-money art direction** — racing-green and antique-gold palette, Cormorant
-  Garamond display type over EB Garamond, gold-leaf wordmark, film grain + vignette,
-  drop caps, a slow marquee, and a numbered editorial structure.
-- **Living micro-interactions** — scroll reveals, animated hairline underlines, a
-  solidifying nav, hover lifts on the rooms, parallax grounds.
-- **Real content** — the mansion, the named rooms (Annie, Kate, Cindy), the Libby
-  Supper Club's six-course prix fixe, the grounds, and the actual address and phone.
+- **One continuous page**, scored in movements: Hero → The Mansion (I) → In Residence
+  → Recognition → Rooms (II) → Libby Supper Club (III) → The Season (IV) → The Grounds
+  (V) → Gallery → From the House → Weddings (VI) → Before You Come (VII) → Reserve.
+- **Thirteen named rooms**, each with a slide-in detail drawer, its own photo gallery,
+  and a clean hand-off to reservation.
+- **A "gilded dust" hero** built in Three.js — two breathing point fields, a chandelier
+  ring, fog, cursor parallax, and a gentle scroll dolly.
+- **Real photography** layered over CSS gradients, preloaded and faded in, with a
+  graceful fallback if an image never arrives — plus a full gallery with a lightbox.
+- **A date-aware Season line** that reads the real racing calendar — the meet runs
+  mid-July to Labor Day, and the copy knows whether the gate is open.
+- **Two reservation modals** (the house, and a table at Libby), each composing a real
+  email so a guest's note genuinely reaches someone.
+- **A restrained custom cursor** with magnetic buttons, shown only to fine-pointer
+  visitors and only when motion is welcome; and an elegant load veil that lifts on entry.
+- **Built for everyone**: reduced-motion awareness throughout, focus traps, skip link,
+  WCAG-AA focus styling, and a code-split Three.js bundle so the page is quick before
+  it is ornamental.
 
-### Sections
+---
 
-1. Hero — `Union Gables`, the confident invitation
-2. The Mansion — the Gilded-Age story, gardens, pool, breakfast
-3. The Rooms — Annie, Kate, Cindy
-4. Libby Supper Club — six courses, one seating
-5. The Grounds — gardens, pool, porch
-6. Reserve — *“The season is short. The porch is not.”*
+## Tech stack
 
-## Run it
+- **[Vite](https://vitejs.dev/)** — dev server and build (`base: './'`, so the output
+  runs from any static host or a bare file path).
+- **[Three.js](https://threejs.org/)** — the hero scene, dynamically imported into its
+  own chunk.
+- **Vanilla JavaScript** (ES modules) — no framework, no runtime dependency beyond Three.
+- **HTML + CSS** — a single hand-written page and a single stylesheet.
+- **Type**: Cormorant Garamond, EB Garamond, Jost.
+- **Palette**: racing green, antique gold, ivory, racing silk.
+- **Node 18+**.
 
-```bash
-npm install
-npm run dev      # local dev server with HMR
-npm run build    # production build → dist/
-npm run preview  # preview the production build
+---
+
+## Project structure
+
+```
+union-gables/
+├── index.html              Single-page scroll; SEO meta/OG/Twitter, JSON-LD
+│                           (BedAndBreakfast + Restaurant), skip link, manifest/icons,
+│                           reservation + Libby modals, room-detail drawer, gallery.
+├── src/
+│   ├── main.js             Entry. Wires everything; defers Three.js via dynamic import,
+│   │                       IntersectionObserver scroll reveals, rAF scroll-progress,
+│   │                       reduced-motion-aware smooth scroll.
+│   ├── scene.js            Three.js "gilded dust" hero. Reduced-motion + tab-hidden
+│   │                       aware. Code-split into its own chunk.
+│   ├── photos.js           Real CDN photography over CSS gradients; preload-then-fade
+│   │                       with graceful fallback. Hero eager, the rest lazy (IO).
+│   ├── reserve.js          Room reservation modal (mailto to stay@), focus trap, a11y.
+│   ├── libby-reserve.js    Libby Supper Club reservation modal (mailto to dine@).
+│   ├── room-detail.js      Slide-in room drawer with gallery; hands off to reservation.
+│   ├── gallery.js          The house-in-pictures gallery + full-frame lightbox.
+│   ├── season.js           Date-aware hero line driven by the real racing calendar.
+│   ├── cursor.js           Restrained custom cursor (fine-pointer only, motion-safe).
+│   ├── intro.js            Brief load veil that lifts after load (failsafe-removed).
+│   └── styles.css          All styling — palette and type.
+├── public/
+│   ├── photo-manifest.json ~69 photos catalogued (Nimble + Exa) with CDN base.
+│   ├── 404.html  robots.txt  sitemap.xml  site.webmanifest  icon.svg
+├── DESIGN-BRIEF.md         The design intent.
+├── PRD.md                  Product requirements (incl. the affluent-client voice).
+├── COPY-DECK.md            The written voice, room by room.
+├── vite.config.js
+└── package.json
 ```
 
-Requires Node 18+. The build emits a fully static `dist/` that runs on any host.
+---
 
-## Photography
+## Getting started
 
-Every real photo on the live inn site was catalogued with **Nimble** (site map +
-page extraction) and **Exa** (cross-check) into [`public/photo-manifest.json`](public/photo-manifest.json)
-— 69 images across exterior, rooms, dining, grounds, pool and the racetrack, plus the
-brand marks, all on the inn's own CDN.
+Requires **Node 18 or newer**.
 
-`src/photos.js` layers a curated selection straight from that CDN into the hero, the
-rooms, the grounds and Libby. Each image is preloaded and only swapped in on success,
-so if a host ever blocks hotlinking the hand-built gradients underneath simply remain —
-nothing renders a broken image. To self-host instead, download the files in the manifest
-into `public/assets/photos/` and point `CDN` in `src/photos.js` at `/assets/photos/`.
+```bash
+npm install      # install dependencies (Vite + Three)
+npm run dev      # start the dev server at http://localhost:5173
+npm run build    # produce a static site in dist/
+npm run preview  # serve the built dist/ locally to check it
+```
 
-## Notes on accessibility & performance
+---
 
-- Honors `prefers-reduced-motion`: the scene stills, animations collapse.
-- The WebGL canvas is decorative (`aria-hidden`) and fails gracefully to a green wash
-  if a context can't be created.
-- Pixel ratio is capped at 2 and the render loop pauses when the tab is hidden.
-- Fonts load from Google Fonts with Georgia / serif fallbacks.
+## How the photography system works
 
-## Credit
+The site ships **no image binaries of its own**. Photography is hotlinked from the
+inn's existing CDN and composited over CSS gradients, so the page reads beautifully
+even before a single photo loads.
 
-Content adapted from the real Union Gables Inn, 55 Union Avenue, Saratoga Springs, NY
-12866 · (518) 584-1558. This is a design concept, not the live booking site.
+- `public/photo-manifest.json` is the catalogue — ~69 originals collected from the live
+  property (via Nimble + Exa). It records the CDN base and each filename by category.
+  The CDN accepts `?w=<px>&h=<px>` for responsive variants.
+- `src/photos.js` reads image URLs, **preloads** each one, and **fades** it in only once
+  it has decoded. If a request never resolves, the gradient simply stays — nothing
+  breaks, nothing flashes. The hero loads **eagerly**; everything else loads **lazily**
+  via `IntersectionObserver`.
+
+**To self-host the photography** (recommended for production): download the originals
+listed in `photo-manifest.json` from the `cdnBase`, place them under `public/`, and
+repoint the URLs in `src/photos.js`, `src/room-detail.js`, and `src/gallery.js` at the
+local paths. The fallback behaviour is unchanged.
+
+---
+
+## Accessibility & performance
+
+- **Reduced motion is honoured everywhere** — the hero scene, smooth scroll, custom
+  cursor, intro veil, and overlays all check `prefers-reduced-motion`.
+- **The hero scene is code-split** — Three.js loads through a dynamic import; the main
+  bundle stays around ~20 KB so the page is interactive quickly. The scene pauses when
+  the tab is hidden.
+- **Images are lazy** below the fold and faded in only after decode — no layout shift.
+- **Modals, the room drawer, and the lightbox trap focus**, restore it on close, and
+  respond to `Escape`. Rooms open by keyboard (the name is a real control).
+- **A skip link** jumps past the hero; focus styling meets **WCAG AA**.
+
+---
+
+## SEO & structured data
+
+`index.html` carries descriptive meta tags, Open Graph, and Twitter Card data, plus two
+**JSON-LD** blocks — a `BedAndBreakfast` for the inn and a `Restaurant` for the Libby
+Supper Club. `public/` adds `robots.txt`, `sitemap.xml`, `site.webmanifest`, and a
+self-contained `404.html`.
+
+---
+
+## Before launch
+
+Everything below is intentional and ready to be made real. Confirm each item against
+the property before the site goes live.
+
+- [ ] **Production domain** is set everywhere it appears — the canonical link, Open
+      Graph/Twitter URLs, the JSON-LD `url` fields, and `public/sitemap.xml`.
+- [ ] **Exact geo coordinates** in the JSON-LD are the real ones for 55 Union Avenue.
+- [ ] **Price ranges** are confirmed (rooms, and Libby's `priceRange`).
+- [ ] **Check-in / check-out times** are the house's actual times.
+- [ ] **Breakfast hours** and the **pet policy** in the copy are confirmed — both are
+      currently marked 〈confirm〉 in `index.html` / `COPY-DECK.md`.
+- [ ] **Testimonials**: none are currently shipped. Publish only real, attributable
+      guest words — do not invent any.
+- [ ] **Raster icons exist.** `site.webmanifest` references `icon-192.png`,
+      `icon-512.png`, and an apple-touch icon; only `icon.svg` is present today.
+- [ ] **Inboxes are monitored** — `stay@uniongables.com` and `dine@libbysupperclub.com`.
+      The reservation forms email these directly.
+- [ ] **CDN images are confirmed hotlinkable**, or the photography is **self-hosted**
+      from `photo-manifest.json` (see above).
+
+---
+
+## Deploy
+
+`npm run build` emits a fully static `dist/`. Because the build uses a relative base, it
+runs from any static host — Netlify, Vercel, Cloudflare Pages, GitHub Pages, S3, a plain
+Nginx directory, or a local file path — with no server-side runtime. Point the host at
+`dist/` and you're done.
+
+---
+
+## Credits
+
+Content adapted from the real Union Gables Inn and the Libby Supper Club, Saratoga
+Springs, New York. This repository is a design concept — built from research and a
+written brief, in the property's own understatement.

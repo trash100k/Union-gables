@@ -5,8 +5,13 @@ import { initLibbyReserve } from './libby-reserve.js'
 import { initSeason } from './season.js'
 import { initCursor } from './cursor.js'
 import { initRoomDetail } from './room-detail.js'
+import { initGallery } from './gallery.js'
+import { initIntro } from './intro.js'
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/* ---- Intro veil (lifts after load; cannot ever stick) ---- */
+initIntro()
 
 /* ---- Real Union Gables photography (graceful fallback to gradients) ---- */
 loadPhotos()
@@ -30,8 +35,21 @@ document.querySelectorAll('.room').forEach((room) => {
   hint.addEventListener('click', () => reserve && reserve.open(name))
   const openDetail = () => roomDetail.open(room)
   room.querySelector('.room__plate')?.addEventListener('click', openDetail)
-  room.querySelector('.room__name')?.addEventListener('click', openDetail)
+  // The room name is the keyboard-operable way into the detail drawer.
+  const nameEl = room.querySelector('.room__name')
+  if (nameEl) {
+    nameEl.setAttribute('role', 'button')
+    nameEl.setAttribute('tabindex', '0')
+    nameEl.setAttribute('aria-haspopup', 'dialog')
+    nameEl.addEventListener('click', openDetail)
+    nameEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetail() }
+    })
+  }
 })
+
+/* ---- The Gallery + lightbox ---- */
+initGallery()
 
 /* ---- Three.js hero — deferred off the critical path (decorative) ---- */
 const canvas = document.getElementById('gilded-canvas')
@@ -52,9 +70,11 @@ if (canvas) {
 
 /* ---- Nav: solidify on scroll ---- */
 const nav = document.getElementById('nav')
-const onNavScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 40)
-onNavScroll()
-window.addEventListener('scroll', onNavScroll, { passive: true })
+if (nav) {
+  const onNavScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 40)
+  onNavScroll()
+  window.addEventListener('scroll', onNavScroll, { passive: true })
+}
 
 /* ---- Scroll reveals ---- */
 const reveals = document.querySelectorAll('.reveal')

@@ -1298,3 +1298,103 @@ main { position: relative; z-index: 2; }
 }
 .recognition__line { margin: 2.2rem 0 0; font-style: italic; font-size: 1rem; color: var(--sage); }
 @media (max-width: 560px) { .recognition__marks { flex-direction: column; gap: 1.8rem; } }
+
+/* ---------- Intro veil (above all; lifts after load, then removed) ---------- */
+.intro {
+  position: fixed; inset: 0; z-index: 200;
+  display: grid; place-items: center;
+  background: var(--green-800);
+  transition: opacity 0.7s var(--ease), transform 0.8s var(--ease), visibility 0s linear 0.8s;
+  will-change: transform, opacity;
+}
+.intro__mark { width: clamp(76px, 12vw, 116px); height: auto; overflow: visible; }
+.intro__gable {
+  fill: none; stroke: var(--gold); stroke-width: 2; stroke-linejoin: round;
+  stroke-dasharray: 360; stroke-dashoffset: 360;
+  transition: stroke-dashoffset 0.95s var(--ease);
+}
+.intro__door {
+  fill: none; stroke: var(--gold); stroke-width: 2; opacity: 0;
+  transition: opacity 0.5s var(--ease) 0.45s;
+}
+.intro__ug {
+  font-family: var(--ff-display); font-size: 16px; font-weight: 500;
+  letter-spacing: 0.12em; fill: var(--gold-hi); opacity: 0;
+  transition: opacity 0.5s var(--ease) 0.55s;
+}
+.intro--draw .intro__gable { stroke-dashoffset: 0; }
+.intro--draw .intro__door, .intro--draw .intro__ug { opacity: 1; }
+.intro--gone { opacity: 0; transform: translateY(-2%); visibility: hidden; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .intro, .intro__gable, .intro__door, .intro__ug { transition: none; }
+  .intro--gone { transform: none; }
+}
+
+/* ---------- Gallery + lightbox ---------- */
+.gallery__grid { column-count: 3; column-gap: 14px; }
+@media (max-width: 860px) { .gallery__grid { column-count: 2; } }
+@media (max-width: 520px) { .gallery__grid { column-count: 1; } }
+.gallery__tile {
+  display: block; width: 100%; margin: 0 0 14px; padding: 0;
+  border: 1px solid rgba(197,162,83,0.18); border-radius: 2px;
+  background: var(--green-800); overflow: hidden; cursor: pointer;
+  break-inside: avoid; -webkit-column-break-inside: avoid;
+  transition: border-color 0.5s var(--ease), box-shadow 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.gallery__tile:hover, .gallery__tile:focus-visible {
+  border-color: rgba(197,162,83,0.55);
+  box-shadow: 0 18px 50px -28px rgba(0,0,0,0.85); transform: translateY(-2px);
+}
+.gallery__img { display: block; width: 100%; height: auto; transition: transform 0.7s var(--ease), opacity 0.7s var(--ease); }
+.gallery__tile:hover .gallery__img { transform: scale(1.04); }
+.lightbox {
+  position: fixed; inset: 0; z-index: 69;
+  display: flex; align-items: center; justify-content: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  visibility: hidden; opacity: 0;
+  transition: opacity 0.45s var(--ease), visibility 0s linear 0.45s;
+}
+.lightbox.is-open { visibility: visible; opacity: 1; transition: opacity 0.45s var(--ease); }
+.lightbox__scrim { position: absolute; inset: 0; background: rgba(6,15,10,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.lightbox__panel {
+  position: relative; width: min(1100px, 100%); max-height: 92vh;
+  display: flex; flex-direction: column;
+  background: linear-gradient(180deg, var(--green-800), var(--green-900));
+  border: 1px solid rgba(197,162,83,0.35); border-radius: 3px;
+  padding: clamp(1.4rem, 4vw, 2.4rem);
+  box-shadow: 0 40px 120px -40px rgba(0,0,0,0.9);
+  transform: translateY(16px) scale(0.985); transition: transform 0.55s var(--ease);
+}
+.lightbox.is-open .lightbox__panel { transform: none; }
+.lightbox__close { position: absolute; top: 0.7rem; right: 1rem; background: none; border: none; color: var(--ivory-dim); font-size: 1.8rem; line-height: 1; cursor: pointer; transition: color 0.3s var(--ease); }
+.lightbox__close:hover { color: var(--gold); }
+.lightbox__figure { margin: 0.4rem 0 0; min-height: 0; display: flex; align-items: center; justify-content: center; }
+.lightbox__img { max-width: 100%; max-height: calc(92vh - 7rem); width: auto; height: auto; object-fit: contain; border: 1px solid rgba(197,162,83,0.22); border-radius: 2px; display: block; }
+.lightbox__img.is-broken { display: none; }
+.lightbox__nav { display: flex; align-items: center; justify-content: center; gap: 1.4rem; margin: 1.1rem 0 0; }
+.lightbox__counter { font-family: var(--ff-eyebrow); letter-spacing: 0.22em; font-size: 0.66rem; color: var(--ivory-dim); min-width: 4.5em; text-align: center; }
+.lightbox__arrow {
+  width: 2.6rem; height: 2.6rem; display: inline-flex; align-items: center; justify-content: center;
+  background: none; border: 1px solid rgba(197,162,83,0.45); border-radius: 50%;
+  color: var(--gold-hi); font-size: 1.1rem; line-height: 1; cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.lightbox__arrow:hover { background: var(--gold); color: var(--green-900); border-color: var(--gold); }
+@media (prefers-reduced-motion: reduce) {
+  .lightbox, .lightbox.is-open { transition: opacity 0.001s linear; }
+  .lightbox__panel, .lightbox.is-open .lightbox__panel { transform: none; transition: none; }
+  .gallery__tile, .gallery__img { transition: none; }
+  .gallery__tile:hover .gallery__img { transform: none; }
+}
+
+/* ---------- Journal / From the House ---------- */
+.journal { background: var(--green-900); }
+.journal__title { color: var(--ivory); }
+.journal__note { margin: 1.4rem 0 0; max-width: 42ch; color: var(--sage); font-family: var(--ff-eyebrow); font-weight: 300; font-size: 0.95rem; letter-spacing: 0.02em; }
+.journal__grid { margin-top: clamp(2.6rem, 6vw, 4rem); display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.6rem, 4vw, 3rem); }
+.journal__entry { position: relative; padding-top: 1.9rem; border-top: 1px solid rgba(197,162,83,0.32); }
+.journal__entry::before { content: ""; position: absolute; top: -1px; left: 0; width: 2.4rem; height: 1px; background: var(--gold); }
+.journal__kicker { display: block; font-family: var(--ff-eyebrow); text-transform: uppercase; letter-spacing: 0.28em; font-size: 0.68rem; color: var(--gold); }
+.journal__head { font-family: var(--ff-display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 1.95rem); line-height: 1.08; margin: 0.85rem 0 0.9rem; color: var(--ivory); }
+.journal__entry p { margin: 0; color: var(--ivory-dim); font-size: 1.02rem; line-height: 1.62; }
+@media (max-width: 880px) { .journal__grid { grid-template-columns: 1fr; } }
