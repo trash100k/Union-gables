@@ -104,6 +104,7 @@ export function initReserve() {
     stepForm.hidden = true
     stepDone.hidden = false
     form.reset()
+    stepDone.querySelector('[data-close]')?.focus()
   })
 
   // expose for other modules / debugging

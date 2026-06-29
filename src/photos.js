@@ -56,14 +56,22 @@ function apply(el, src) {
 }
 
 export function loadPhotos() {
-  // Rooms (square-ish crops to fit the 4:5 plates)
-  Object.entries(ROOMS).forEach(([key, file]) => {
-    const el = document.querySelector(`.room__plate[data-room="${key}"]`)
-    if (el) apply(el, url(file, 740, 900))
-  })
-  // Sections + grounds
-  SECTIONS.forEach(({ sel, file, w, h }) => {
-    const el = document.querySelector(sel)
-    if (el) apply(el, url(file, w, h))
-  })
+  // The hero is the LCP candidate — load it straight away.
+  const hero = SECTIONS[0]
+  const heroEl = document.querySelector(hero.sel)
+  if (heroEl) apply(heroEl, url(hero.file, hero.w, hero.h))
+
+  // Everything below the fold waits for idle so it never races the hero.
+  const rest = () => {
+    Object.entries(ROOMS).forEach(([key, file]) => {
+      const el = document.querySelector(`.room__plate[data-room="${key}"]`)
+      if (el) apply(el, url(file, 740, 900))
+    })
+    SECTIONS.slice(1).forEach(({ sel, file, w, h }) => {
+      const el = document.querySelector(sel)
+      if (el) apply(el, url(file, w, h))
+    })
+  }
+  if ('requestIdleCallback' in window) requestIdleCallback(rest, { timeout: 1500 })
+  else setTimeout(rest, 200)
 }

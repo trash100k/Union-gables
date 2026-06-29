@@ -1,21 +1,25 @@
 import './styles.css'
-import { initScene } from './scene.js'
 import { loadPhotos } from './photos.js'
 import { initReserve } from './reserve.js'
 import { initSeason } from './season.js'
+import { initCursor } from './cursor.js'
+
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /* ---- Real Union Gables photography (graceful fallback to gradients) ---- */
 loadPhotos()
 
-/* ---- Reservation flow + date-aware seasonal hero ---- */
+/* ---- Reservation flow + date-aware seasonal hero + aliveness cursor ---- */
 const reserve = initReserve()
 initSeason()
+initCursor()
 
-/* ---- A room is a way in: clicking one opens the reservation, pre-chosen ---- */
+/* ---- A room is a way in: a keyboard-operable button opens the reservation ---- */
 document.querySelectorAll('.room').forEach((room) => {
   const name = room.querySelector('.room__name')?.textContent.trim()
   if (!name) return
-  const hint = document.createElement('span')
+  const hint = document.createElement('button')
+  hint.type = 'button'
   hint.className = 'room__reserve'
   hint.textContent = 'Reserve ' + name + ' →'
   room.appendChild(hint)
@@ -24,27 +28,28 @@ document.querySelectorAll('.room').forEach((room) => {
   room.querySelector('.room__plate')?.addEventListener('click', go)
 })
 
-/* ---- Three.js hero ---- */
+/* ---- Three.js hero — deferred off the critical path (decorative) ---- */
 const canvas = document.getElementById('gilded-canvas')
 if (canvas) {
-  // WebGL can fail (old hardware, blocked context). Fall back gracefully.
-  try {
-    initScene(canvas)
-  } catch (err) {
-    console.warn('Gilded scene unavailable; resting on the green.', err)
-    canvas.style.display = 'none'
-    document.body.style.background =
-      'radial-gradient(120% 90% at 50% 0%, #14301f, #0a1a12)'
+  const startScene = () => {
+    import('./scene.js')
+      .then(({ initScene }) => initScene(canvas))
+      .catch((err) => {
+        console.warn('Gilded scene unavailable; resting on the green.', err)
+        canvas.style.display = 'none'
+        document.body.style.background =
+          'radial-gradient(120% 90% at 50% 0%, #14301f, #0a1a12)'
+      })
   }
+  if ('requestIdleCallback' in window) requestIdleCallback(startScene, { timeout: 2000 })
+  else setTimeout(startScene, 1)
 }
 
 /* ---- Nav: solidify on scroll ---- */
 const nav = document.getElementById('nav')
-const onScroll = () => {
-  nav.classList.toggle('is-scrolled', window.scrollY > 40)
-}
-onScroll()
-window.addEventListener('scroll', onScroll, { passive: true })
+const onNavScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 40)
+onNavScroll()
+window.addEventListener('scroll', onNavScroll, { passive: true })
 
 /* ---- Scroll reveals ---- */
 const reveals = document.querySelectorAll('.reveal')
@@ -65,7 +70,7 @@ if ('IntersectionObserver' in window) {
   reveals.forEach((el) => el.classList.add('is-visible'))
 }
 
-/* ---- Smooth anchor scrolling with nav offset (reserve triggers excepted) ---- */
+/* ---- Smooth anchor scrolling (reserve triggers excepted, reduced-motion aware) ---- */
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   if (link.hasAttribute('data-reserve')) return
   link.addEventListener('click', (e) => {
@@ -75,21 +80,26 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
     if (!target) return
     e.preventDefault()
     const top = target.getBoundingClientRect().top + window.scrollY - 70
-    window.scrollTo({ top, behavior: 'smooth' })
+    window.scrollTo({ top, behavior: prefersReduced ? 'auto' : 'smooth' })
   })
 })
 
-/* ---- Scroll-progress hairline ---- */
+/* ---- Scroll-progress hairline (cached max + rAF-batched write) ---- */
 const progress = document.getElementById('progress')
 if (progress) {
-  const setProgress = () => {
+  let max = 0, ticking = false
+  const recalc = () => {
     const h = document.documentElement
-    const max = h.scrollHeight - h.clientHeight
-    progress.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`
+    max = h.scrollHeight - h.clientHeight
   }
-  setProgress()
-  window.addEventListener('scroll', setProgress, { passive: true })
-  window.addEventListener('resize', setProgress)
+  const setProgress = () => {
+    progress.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`
+    ticking = false
+  }
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(setProgress) } }
+  recalc(); setProgress()
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', () => { recalc(); setProgress() })
 }
 
 /* ---- Year (kept at 1901 in spirit, current in fact) ---- */

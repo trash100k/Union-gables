@@ -30,6 +30,30 @@
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
+/* Keyboard focus — visible everywhere interactive */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Skip link */
+.skip-link {
+  position: fixed; top: 0; left: 50%;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  background: var(--gold); color: var(--green-900);
+  font-family: var(--ff-eyebrow); text-transform: uppercase;
+  letter-spacing: 0.18em; font-size: 0.72rem;
+  padding: 0.8em 1.4em; border-radius: 0 0 2px 2px;
+  transition: transform 0.2s var(--ease);
+}
+.skip-link:focus { transform: translate(-50%, 0); outline: 2px solid var(--green-900); }
+
+/* Small uppercase gold labels → brighter for AA contrast on gradient cards */
+.room__tag, .libby__k, .weddings__k, .timeline__when { color: var(--gold-hi); }
+.room__tag--silk::before { background: var(--silk); }
+
 body {
   margin: 0;
   background: var(--green-800);
@@ -932,11 +956,17 @@ main { position: relative; z-index: 2; }
 .room__reserve {
   display: block;
   margin-top: 1rem;
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
   font-family: var(--ff-eyebrow);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 0.62rem;
-  color: var(--gold);
+  color: var(--gold-hi);
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
@@ -1036,8 +1066,101 @@ main { position: relative; z-index: 2; }
   .rform__row { grid-template-columns: 1fr; }
 }
 
+/* ---------- Aliveness cursor ---------- */
+.ug-cursor-active,
+.ug-cursor-active a,
+.ug-cursor-active button,
+.ug-cursor-active .room,
+.ug-cursor-active [data-reserve],
+.ug-cursor-active input,
+.ug-cursor-active select,
+.ug-cursor-active textarea,
+.ug-cursor-active label { cursor: none; }
+
+.ug-cursor {
+  position: fixed; top: 0; left: 0;
+  z-index: 65;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 320ms ease;
+  will-change: opacity;
+}
+.ug-cursor.is-visible { opacity: 1; }
+.ug-cursor__ring {
+  position: absolute; top: 0; left: 0;
+  width: 30px; height: 30px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0.85;
+  mix-blend-mode: screen;
+  box-shadow: 0 0 0 0 rgba(231,207,148,0);
+  transition: width 260ms var(--ease), height 260ms var(--ease), opacity 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+  will-change: transform;
+}
+.ug-cursor__dot {
+  position: absolute; top: 0; left: 0;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--gold-hi);
+  opacity: 0.9;
+  mix-blend-mode: screen;
+  transition: opacity 220ms ease;
+  will-change: transform;
+}
+.ug-cursor.is-hover .ug-cursor__ring {
+  width: 52px; height: 52px;
+  opacity: 0.5;
+  border-color: var(--gold-hi);
+  box-shadow: 0 0 22px -6px rgba(231,207,148,0.35);
+}
+.ug-cursor.is-hover .ug-cursor__dot { opacity: 0.55; }
+.ug-cursor.is-pressed .ug-cursor__ring { width: 22px; height: 22px; opacity: 0.95; }
+.ug-cursor.is-pressed.is-hover .ug-cursor__ring { width: 42px; height: 42px; }
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .ug-cursor { display: none; }
+  .ug-cursor-active, .ug-cursor-active * { cursor: auto; }
+}
+
+/* ---------- In Residence (the human counterweight) ---------- */
+.residence {
+  position: relative; z-index: 2;
+  background: var(--green-900);
+  border-top: 1px solid rgba(197,162,83,0.14);
+  border-bottom: 1px solid rgba(197,162,83,0.14);
+}
+.residence__inner {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vh, 6rem) clamp(1.4rem, 5vw, 3rem);
+  text-align: center;
+}
+.residence__eyebrow {
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.34em;
+  font-size: 0.66rem;
+  color: var(--gold);
+  margin: 0 0 1.4rem;
+}
+.residence__head {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--ivory);
+  margin: 0 0 1.4rem;
+}
+.residence__body {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: var(--ivory-dim);
+  font-style: italic;
+  margin: 0 auto;
+  max-width: 640px;
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .hero__title .word { transform: none; }
   .reveal { opacity: 1; transform: none; }
