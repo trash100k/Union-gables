@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Union Gables Inn">
   <rect width="512" height="512" fill="#0c1f16" />
-  <path d="M256 102 L399 215 V410 H113 V215 Z" fill="none" stroke="#c5a253" stroke-width="16" stroke-linejoin="round" />
-  <text x="256" y="338" font-family="Georgia, 'Times New Roman', serif" font-size="150" font-weight="500" fill="#c5a253" text-anchor="middle">UG</text>
+  <g transform="translate(32,73) scale(3.35)" fill="none" stroke="#c5a253" stroke-width="4.8" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M18 45 L34 13 L50 45 L58 48 L80 14 L102 48 L120 61 L120 68" />
+    <path d="M23 45 L23 68 M47 45 L47 68" />
+    <path d="M12 68 L122 68" />
+    <circle cx="80" cy="34" r="3.4" />
+    <path d="M34 13 L34 5 M80 14 L80 5" />
+    <circle cx="34" cy="4" r="2" />
+    <circle cx="80" cy="4" r="2" />
+  </g>
+  <text x="256" y="452" font-family="Georgia, 'Times New Roman', serif" font-size="112" font-weight="500" fill="#c5a253" text-anchor="middle">UG</text>
 </svg>

@@ -114,10 +114,13 @@
 
     <!-- Intro veil: first-paint cover, lifts after load; removed from DOM when done. -->
     <div id="intro" class="intro" aria-hidden="true" role="presentation">
-      <svg class="intro__mark" viewBox="0 0 120 92" aria-hidden="true" focusable="false">
-        <path class="intro__gable" d="M60 6 L112 44 V86 H8 V44 Z" />
-        <path class="intro__door" d="M52 86 V60 a8 8 0 0 1 16 0 V86" />
-        <text class="intro__ug" x="60" y="72" text-anchor="middle">UG</text>
+      <svg class="intro__mark" viewBox="0 0 128 100" aria-hidden="true" focusable="false">
+        <path class="intro__gable" d="M18 45 L34 13 L50 45 L58 48 L80 14 L102 48 L120 61 L120 68" />
+        <path class="intro__door" d="M23 45 L23 68 M47 45 L47 68 M12 68 L122 68 M34 13 L34 5 M80 14 L80 5" />
+        <circle class="intro__door" cx="80" cy="34" r="3.4" />
+        <circle class="intro__door" cx="34" cy="4" r="2" />
+        <circle class="intro__door" cx="80" cy="4" r="2" />
+        <text class="intro__ug" x="64" y="92" text-anchor="middle">UG</text>
       </svg>
     </div>
     <!-- Grain + vignette atmosphere -->
@@ -130,9 +133,15 @@
     <!-- Navigation -->
     <header class="nav" id="nav">
       <a class="nav__brand" href="#top" aria-label="Union Gables, home">
-        <svg class="gable" viewBox="0 0 120 92" aria-hidden="true">
-          <path d="M60 6 L112 44 V86 H8 V44 Z" />
-          <path class="gable__door" d="M52 86 V60 a8 8 0 0 1 16 0 V86" />
+        <svg class="gable" viewBox="0 0 128 80" aria-hidden="true">
+          <!-- traced roofline: turret cone → valley → main gable → right eave -->
+          <path d="M18 45 L34 13 L50 45 L58 48 L80 14 L102 48 L120 61 L120 68" />
+          <path d="M23 45 L23 68 M47 45 L47 68" />
+          <path d="M12 68 L122 68" />
+          <circle cx="80" cy="34" r="3.4" />
+          <path d="M34 13 L34 5 M80 14 L80 5" />
+          <circle cx="34" cy="4" r="2" />
+          <circle cx="80" cy="4" r="2" />
         </svg>
         <span class="nav__wordmark">Union&nbsp;Gables</span>
       </a>
@@ -693,9 +702,14 @@
     <footer class="footer">
       <div class="footer__top">
         <div class="footer__brand">
-          <svg class="gable gable--lg" viewBox="0 0 120 92" aria-hidden="true">
-            <path d="M60 6 L112 44 V86 H8 V44 Z" />
-            <path class="gable__door" d="M52 86 V60 a8 8 0 0 1 16 0 V86" />
+          <svg class="gable gable--lg" viewBox="0 0 128 80" aria-hidden="true">
+            <path d="M18 45 L34 13 L50 45 L58 48 L80 14 L102 48 L120 61 L120 68" />
+            <path d="M23 45 L23 68 M47 45 L47 68" />
+            <path d="M12 68 L122 68" />
+            <circle cx="80" cy="34" r="3.4" />
+            <path d="M34 13 L34 5 M80 14 L80 5" />
+            <circle cx="34" cy="4" r="2" />
+            <circle cx="80" cy="4" r="2" />
           </svg>
           <span class="footer__wordmark">Union Gables</span>
           <span class="footer__tag">Voted Best of the Saratoga Region</span>

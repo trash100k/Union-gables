@@ -282,13 +282,14 @@ main { position: relative; z-index: 2; }
 }
 .nav__brand { display: flex; align-items: center; gap: 0.75rem; }
 .gable {
-  width: 30px; height: auto;
+  width: 34px; height: auto;
   fill: none;
   stroke: var(--gold);
-  stroke-width: 4;
+  stroke-width: 3.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
   overflow: visible;
 }
-.gable__door { stroke: var(--gold); stroke-width: 4; }
 .nav__wordmark {
   font-family: var(--ff-display);
   font-size: 1.5rem;
@@ -1594,12 +1595,14 @@ main { position: relative; z-index: 2; }
 }
 .intro__mark { width: clamp(76px, 12vw, 116px); height: auto; overflow: visible; }
 .intro__gable {
-  fill: none; stroke: var(--gold); stroke-width: 2; stroke-linejoin: round;
-  stroke-dasharray: 360; stroke-dashoffset: 360;
+  fill: none; stroke: var(--gold); stroke-width: 2;
+  stroke-linejoin: round; stroke-linecap: round;
+  stroke-dasharray: 210; stroke-dashoffset: 210;
   transition: stroke-dashoffset 0.95s var(--ease);
 }
 .intro__door {
-  fill: none; stroke: var(--gold); stroke-width: 2; opacity: 0;
+  fill: none; stroke: var(--gold); stroke-width: 2;
+  stroke-linejoin: round; stroke-linecap: round; opacity: 0;
   transition: opacity 0.5s var(--ease) 0.45s;
 }
 .intro__ug {
