@@ -34,6 +34,7 @@ const ROOMS = {
 // Section backgrounds and grounds plates.
 const SECTIONS = [
   { sel: '.hero__photo',          file: 'union-gables-inn_exterior_01.jpg', w: 1600 },
+  { sel: '.plate__photo',         file: 'porch.jpg',                        w: 1400 },
   { sel: '.libby',                file: 'union-gables-inn_dining_05.jpg',   w: 1600 },
   { sel: '.season__photo',        file: 'union-gables-inn_saratoga-springs-racetrack.jpg', w: 1600 },
   { sel: '.weddings__photo',      file: 'union-gables-inn_garden_01.jpg',   w: 1600 },

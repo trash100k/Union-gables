@@ -28,6 +28,7 @@ export function initLibbyReserve() {
     stepForm.hidden = false
     stepDone.hidden = true
     errorEl.hidden = true
+    form.querySelectorAll('[aria-invalid]').forEach((f) => f.removeAttribute('aria-invalid'))
     modal.classList.add('is-open')
     modal.setAttribute('aria-hidden', 'false')
     document.body.style.overflow = 'hidden'
@@ -67,11 +68,21 @@ export function initLibbyReserve() {
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
   })
 
+  const REQUIRED = ['date', 'name', 'email']
+  const clearMark = (field) => field && field.removeAttribute('aria-invalid')
+  REQUIRED.forEach((k) => form.elements[k]?.addEventListener('input', (e) => clearMark(e.target)))
+
   form.addEventListener('submit', (e) => {
     e.preventDefault()
     const data = Object.fromEntries(new FormData(form).entries())
-    const missing = ['date', 'name', 'email'].some((k) => !String(data[k] || '').trim())
-    if (missing) { errorEl.hidden = false; return }
+    const missing = REQUIRED.filter((k) => !String(data[k] || '').trim())
+    REQUIRED.forEach((k) => clearMark(form.elements[k]))
+    if (missing.length) {
+      missing.forEach((k) => form.elements[k]?.setAttribute('aria-invalid', 'true'))
+      errorEl.hidden = false
+      form.elements[missing[0]]?.focus()
+      return
+    }
     errorEl.hidden = true
 
     const subject = `A table at Libby — ${data.date}`

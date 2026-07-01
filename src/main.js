@@ -4,6 +4,7 @@ import { initReserve } from './reserve.js'
 import { initLibbyReserve } from './libby-reserve.js'
 import { initSeason } from './season.js'
 import { initCursor } from './cursor.js'
+import { initLight } from './light.js'
 import { initRoomDetail } from './room-detail.js'
 import { initGallery } from './gallery.js'
 import { initIntro } from './intro.js'
@@ -21,6 +22,7 @@ const reserve = initReserve()
 initLibbyReserve()
 initSeason()
 initCursor()
+initLight()
 
 /* ---- A room is a way in: plate/name opens the detail drawer; the hint reserves ---- */
 const roomDetail = initRoomDetail((name) => reserve && reserve.open(name))
@@ -51,29 +53,35 @@ document.querySelectorAll('.room').forEach((room) => {
 /* ---- The Gallery + lightbox ---- */
 initGallery()
 
-/* ---- Three.js hero — deferred off the critical path (decorative) ---- */
-const canvas = document.getElementById('gilded-canvas')
-if (canvas) {
-  const startScene = () => {
-    import('./scene.js')
-      .then(({ initScene }) => initScene(canvas))
-      .catch((err) => {
-        console.warn('Gilded scene unavailable; resting on the green.', err)
-        canvas.style.display = 'none'
-        document.body.style.background =
-          'radial-gradient(120% 90% at 50% 0%, #14301f, #0a1a12)'
-      })
-  }
-  if ('requestIdleCallback' in window) requestIdleCallback(startScene, { timeout: 2000 })
-  else setTimeout(startScene, 1)
-}
-
 /* ---- Nav: solidify on scroll ---- */
 const nav = document.getElementById('nav')
 if (nav) {
   const onNavScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 40)
   onNavScroll()
   window.addEventListener('scroll', onNavScroll, { passive: true })
+}
+
+/* ---- Nav: mobile section menu (Reserve stays in the bar) ---- */
+const navToggle = document.getElementById('nav-toggle')
+const navMenu = document.getElementById('nav-menu')
+if (nav && navToggle && navMenu) {
+  const setMenu = (open) => {
+    nav.classList.toggle('is-menu-open', open)
+    navToggle.setAttribute('aria-expanded', String(open))
+    navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu')
+  }
+  navToggle.addEventListener('click', () =>
+    setMenu(!nav.classList.contains('is-menu-open')),
+  )
+  navMenu.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => setMenu(false)),
+  )
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setMenu(false)
+  })
+  document.addEventListener('click', (e) => {
+    if (nav.classList.contains('is-menu-open') && !nav.contains(e.target)) setMenu(false)
+  })
 }
 
 /* ---- Scroll reveals ---- */

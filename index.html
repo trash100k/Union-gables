@@ -124,10 +124,8 @@
     <div class="atmosphere" aria-hidden="true">
       <div class="grain"></div>
       <div class="vignette"></div>
+      <div class="sheen"></div>
     </div>
-
-    <!-- Three.js hero canvas -->
-    <canvas id="gilded-canvas" aria-hidden="true"></canvas>
 
     <!-- Navigation -->
     <header class="nav" id="nav">
@@ -139,10 +137,16 @@
         <span class="nav__wordmark">Union&nbsp;Gables</span>
       </a>
       <nav class="nav__links" aria-label="Primary">
-        <a href="#rooms">The Rooms</a>
-        <a href="#libby">Libby Supper Club</a>
-        <a href="#season">The Season</a>
-        <a href="#weddings">Weddings</a>
+        <div class="nav__menu" id="nav-menu">
+          <a href="#rooms">The Rooms</a>
+          <a href="#libby">Libby Supper Club</a>
+          <a href="#season">The Season</a>
+          <a href="#weddings">Weddings</a>
+        </div>
+        <button class="nav__toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+          <span class="nav__toggle-bars" aria-hidden="true"></span>
+          <span class="nav__toggle-text">Menu</span>
+        </button>
         <a class="nav__reserve" href="#reserve" data-reserve>Reserve</a>
       </nav>
     </header>
@@ -236,6 +240,14 @@
         </div>
       </section>
 
+      <!-- PLATE — a tipped-in photograph, mounted on the leather -->
+      <section class="plate reveal" aria-label="The porch at Union Gables">
+        <figure class="plate__mount">
+          <div class="plate__photo" role="img" aria-label="The wraparound porch at Union Gables, late afternoon"></div>
+          <figcaption class="plate__caption">The porch faces west. The afternoons are in no hurry.</figcaption>
+        </figure>
+      </section>
+
       <!-- IN RESIDENCE -->
       <section class="residence" id="residence">
         <div class="residence__inner reveal">
@@ -250,6 +262,9 @@
           </p>
         </div>
       </section>
+
+      <!-- Gilt seam — a page division -->
+      <div class="seam reveal" aria-hidden="true"><span class="seam__mark">&#10022;</span></div>
 
       <!-- RECOGNITION -->
       <section class="recognition" id="recognition">
@@ -506,7 +521,7 @@
 
       <!-- THE GALLERY -->
       <section class="section gallery" id="gallery">
-        <div class="section__label reveal"><span>V&middot;</span> In Pictures</div>
+        <div class="section__label reveal">In Pictures</div>
         <h2 class="display rooms__title reveal">The house, in pictures.</h2>
         <div class="gallery__grid reveal" role="list" aria-label="Photographs of the house and grounds"></div>
       </section>
@@ -613,8 +628,7 @@
             <div class="plan__text">
               <h3 class="plan__label">Breakfast</h3>
               <p>
-                A full breakfast, cooked to order and served until ten
-                <span class="plan__confirm">〈confirm hours〉</span>. Something out of the
+                A full breakfast, cooked to order and served until ten. Something out of the
                 oven turns up again in the afternoon, without being announced.
               </p>
             </div>
@@ -624,8 +638,7 @@
             <div class="plan__text">
               <h3 class="plan__label">The dog</h3>
               <p>
-                All eight rooms keep a place for one. Let us know before you arrive
-                <span class="plan__confirm">〈confirm pet policy &amp; fee〉</span> and we'll
+                All eight rooms keep a place for one. Let us know before you arrive, and we'll
                 have the room ready for two of you.
               </p>
             </div>

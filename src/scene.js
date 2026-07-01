@@ -45,18 +45,6 @@ export function initScene(canvas) {
   })
   scene.add(dust.points)
 
-  // ---- Layer B: larger, slower bokeh motes (few, blurred-soft) ----
-  const motes = makeField({
-    count: reduce ? 60 : 150,
-    spread: new THREE.Vector3(40, 22, 14),
-    size: 0.85,
-    sprite,
-    palette: [0xe7cf94, 0xc5a253, 0xf2ead7],
-    breath: 0.45,
-    softness: 0.35,
-  })
-  scene.add(motes.points)
-
   // ---- a faint gilded ring, very slow, like light off a chandelier ----
   const ringGeo = new THREE.TorusGeometry(9, 0.012, 8, 220)
   const ringMat = new THREE.MeshBasicMaterial({
@@ -78,8 +66,13 @@ export function initScene(canvas) {
     pointer.tx = (e.clientX / window.innerWidth - 0.5) * 2
     pointer.ty = (e.clientY / window.innerHeight - 0.5) * 2
   })
+  // Once the reader is a viewport-and-a-quarter down, the scene has faded to
+  // nothing (see uOpacity below) — so there's no reason to keep painting it.
+  const inView = () => window.scrollY < window.innerHeight * 1.25
   window.addEventListener('scroll', () => {
     scrollNorm = Math.min(window.scrollY / window.innerHeight, 1.4)
+    if (inView()) start()
+    else stop()
   }, { passive: true })
 
   function onResize() {
@@ -95,9 +88,8 @@ export function initScene(canvas) {
   function tick() {
     const t = clock.getElapsedTime()
 
-    // breathe the fields
+    // breathe the field
     dust.material.uniforms.uTime.value = t
-    motes.material.uniforms.uTime.value = t
 
     // eased cursor parallax
     pointer.x += (pointer.tx - pointer.x) * 0.04
@@ -107,7 +99,6 @@ export function initScene(canvas) {
     const drift = reduce ? 0 : 1
     dust.points.rotation.y = t * 0.015 * drift + pointer.x * 0.18
     dust.points.rotation.x = pointer.y * 0.10
-    motes.points.rotation.y = -t * 0.01 * drift + pointer.x * 0.10
     ring.rotation.z = t * 0.05 * drift
 
     camera.position.x += (pointer.x * 1.4 - camera.position.x) * 0.03
@@ -118,27 +109,38 @@ export function initScene(canvas) {
     // the canvas recedes as the reader moves into the house
     const fade = Math.max(0, 1 - scrollNorm * 0.85)
     dust.material.uniforms.uOpacity.value = fade
-    motes.material.uniforms.uOpacity.value = fade
     ringMat.opacity = 0.12 * fade
 
     renderer.render(scene, camera)
-    frame = requestAnimationFrame(tick)
+    if (running) frame = requestAnimationFrame(tick)
   }
 
-  let frame = requestAnimationFrame(tick)
+  let frame = 0
+  let running = false
+  function start() {
+    if (running || document.hidden) return
+    running = true
+    clock.getDelta() // drop the idle gap so the drift resumes without a jump
+    frame = requestAnimationFrame(tick)
+  }
+  function stop() {
+    if (!running) return
+    running = false
+    cancelAnimationFrame(frame)
+  }
+  start()
 
-  // pause when the tab is hidden
+  // pause when the tab is hidden; resume only if the hero is still in view
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(frame)
-    else { clock.getDelta(); frame = requestAnimationFrame(tick) }
+    if (document.hidden) stop()
+    else if (inView()) start()
   })
 
   return {
     destroy() {
-      cancelAnimationFrame(frame)
+      stop()
       window.removeEventListener('resize', onResize)
       dust.geometry.dispose(); dust.material.dispose()
-      motes.geometry.dispose(); motes.material.dispose()
       ringGeo.dispose(); ringMat.dispose()
       sprite.dispose()
       renderer.dispose()

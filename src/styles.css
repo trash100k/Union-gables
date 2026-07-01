@@ -24,6 +24,29 @@
 
   --maxw: 1240px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Guest-book materials: worn morocco hide, lit as one surface ---- */
+  /* ONE height-field (fractalNoise: broad worn rolls → pebbles → fine pores) run
+     through a single top-left light. Highlights and shadows come from the same
+     bumps, so it reads as one coherent worn hide instead of stacked noise. Baked
+     green so every surface is the same book. */
+  --hide: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='460'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016' numOctaves='5' seed='11' stitchTiles='stitch' result='n'/%3E%3CfeDiffuseLighting in='n' surfaceScale='3.2' diffuseConstant='1.15' lighting-color='%231a3b28'%3E%3CfeDistantLight azimuth='235' elevation='38'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23h)'/%3E%3C/svg%3E");
+  /* broad worn wash — rubbed-lighter high spots, darker aged hollows */
+  --wear: radial-gradient(120% 90% at 32% 18%, rgba(224,232,214,0.05), transparent 46%),
+          radial-gradient(140% 120% at 78% 96%, rgba(3,8,5,0.34), transparent 52%);
+  --leather-800: var(--wear), linear-gradient(rgba(7,18,12,0.34), rgba(7,18,12,0.34)), var(--hide);
+  --leather-900: linear-gradient(rgba(5,12,8,0.5), rgba(5,12,8,0.5)), var(--hide);
+  --leather-grain: var(--hide);
+  /* white sparkle for the gold leaf */
+  --noise-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* raking light across hand-laid leaf, over solid gold */
+  --gold-leaf:
+    var(--noise-light),
+    linear-gradient(118deg, rgba(255,248,228,0.42) 0%, rgba(255,255,255,0) 30%, rgba(120,92,36,0.32) 64%, rgba(255,248,228,0.36) 100%);
+  /* gilt emboss: raised gold catches top-left light, drops a shadow, and the hide
+     folds down toward it (the soft dark halo) */
+  --gilt-ink: rgba(3,9,6,0.8);
+  --gilt-lit: rgba(255,246,214,0.55);
 }
 
 * { box-sizing: border-box; }
@@ -59,7 +82,7 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--green-800);
+  background: var(--leather-800);
   color: var(--ivory);
   font-family: var(--ff-body);
   font-size: 19px;
@@ -80,7 +103,7 @@ img { max-width: 100%; display: block; }
 .atmosphere { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
 .grain {
   position: absolute; inset: -150%;
-  opacity: 0.05;
+  opacity: 0.03;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: grain 7s steps(6) infinite;
 }
@@ -94,6 +117,15 @@ img { max-width: 100%; display: block; }
 .vignette {
   position: absolute; inset: 0;
   background: radial-gradient(120% 100% at 50% 35%, transparent 50%, rgba(4,12,8,0.55) 100%);
+}
+/* The moving light over the whole book — a soft raking sheen the leather catches.
+   Driven by --light-x/--light-y (set from the pointer in light.js). */
+.sheen {
+  position: absolute; inset: 0;
+  mix-blend-mode: soft-light;
+  opacity: 0.45;
+  background: radial-gradient(46vmax 40vmax at var(--light-x, 50%) var(--light-y, 6%),
+    rgba(255,250,235,0.5) 0%, rgba(255,247,225,0.14) 32%, transparent 62%);
 }
 
 /* ---------- Three.js canvas ---------- */
@@ -147,6 +179,37 @@ main { position: relative; z-index: 2; }
 }
 .section__label--light { color: var(--gold-hi); }
 
+/* ---------- Gilt tooling: every gold line & letter raised + stamped into the hide.
+   Highlight up-left (lit), shadow down-right (raised gold), soft dark halo (the hide
+   folding down toward the gilt). One light direction, shared with the leather. ---------- */
+.section__label,
+.residence__eyebrow,
+.recognition__eyebrow,
+.ledger__num,
+.dropcap,
+.room__tag,
+.libby__k,
+.weddings__k,
+.timeline__when,
+.plan__label,
+.plan__num,
+.journal__kicker,
+.reserve__direct,
+.marquee__track .dot,
+#reserve-modal .eyebrow,
+#libby-modal .eyebrow,
+.rform label,
+.rform__full {
+  text-shadow:
+    0 -0.5px 0 var(--gilt-lit),
+    0 1px 1px var(--gilt-ink),
+    0 2.5px 5px rgba(3,9,6,0.55);
+}
+/* gilt rules pressed into the hide — highlight below, shadow above */
+.section__label::after {
+  box-shadow: 0 -1px 1px rgba(3,9,6,0.6), 0 1px 0 rgba(255,244,210,0.18);
+}
+
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-block;
@@ -169,9 +232,30 @@ main { position: relative; z-index: 2; }
   transition: transform 0.5s var(--ease);
   z-index: -1;
 }
-.btn--gold { background: var(--gold); color: var(--green-900); border-color: var(--gold); }
-.btn--gold::before { background: var(--gold-hi); }
-.btn--gold:hover { color: var(--green-900); box-shadow: 0 14px 40px -16px rgba(197,162,83,0.7); }
+.btn--gold {
+  background:
+    radial-gradient(20vmax 20vmax at var(--light-x, 50%) var(--light-y, 12%), rgba(255,253,246,0.5), rgba(255,250,235,0) 48%),
+    var(--gold-leaf),
+    var(--gold);
+  background-attachment: fixed, scroll, scroll;
+  background-blend-mode: screen, overlay, normal;
+  color: var(--green-900);
+  border-color: var(--gold);
+  /* the gilt stamped into the hide: domed face + a pressed groove around it */
+  box-shadow:
+    inset 0 1px 0 rgba(255,248,228,0.5),
+    inset 0 -2px 3px rgba(70,45,12,0.42),
+    0 0 0 1px rgba(6,14,9,0.5),
+    0 2px 4px rgba(6,14,9,0.4);
+}
+.btn--gold::before { background: var(--gold-leaf), var(--gold-hi); background-blend-mode: overlay, normal; }
+.btn--gold:hover {
+  color: var(--green-900);
+  box-shadow:
+    inset 0 1px 0 rgba(255,248,228,0.55),
+    0 0 0 1px rgba(6,14,9,0.5),
+    0 14px 40px -16px rgba(197,162,83,0.7);
+}
 .btn--gold:hover::before { transform: translateY(0); }
 .btn--ghost { color: var(--ivory); }
 .btn--ghost:hover { color: var(--green-900); }
@@ -213,6 +297,9 @@ main { position: relative; z-index: 2; }
   color: var(--ivory);
 }
 .nav__links { display: flex; align-items: center; gap: clamp(1rem, 2.4vw, 2.4rem); }
+/* the four section links flow inline on desktop; collapse to a menu on mobile */
+.nav__menu { display: contents; }
+.nav__toggle { display: none; }
 .nav__links a {
   font-family: var(--ff-eyebrow);
   text-transform: uppercase;
@@ -243,6 +330,30 @@ main { position: relative; z-index: 2; }
 }
 .nav__reserve:hover { background: var(--gold); color: var(--green-900) !important; }
 
+/* Mobile menu toggle — a small gold "Menu" with a hairline gable-bars glyph */
+.nav__toggle {
+  align-items: center;
+  gap: 0.55em;
+  min-height: 44px;
+  padding: 0.4em 0.9em;
+  background: none;
+  border: 1px solid rgba(197,162,83,0.4);
+  border-radius: 2px;
+  color: var(--gold);
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: border-color 0.4s var(--ease), color 0.4s var(--ease);
+}
+.nav__toggle:hover { border-color: var(--gold); color: var(--gold-hi); }
+.nav__toggle-bars {
+  width: 18px; height: 2px;
+  background: currentColor;
+  box-shadow: 0 -6px 0 currentColor, 0 6px 0 currentColor;
+}
+
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
@@ -255,6 +366,19 @@ main { position: relative; z-index: 2; }
   padding: 7rem clamp(1.2rem, 5vw, 3rem) 4rem;
 }
 .hero__inner { max-width: 880px; }
+/* Gilt tooled frame — the guest-book cover. Double hairline, inset from the edges. */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: clamp(0.7rem, 2.2vw, 1.5rem);
+  z-index: 1;
+  pointer-events: none;
+  /* gilt line pressed into the hide: dark outer wall, gold, inner highlight */
+  box-shadow:
+    inset 0 0 0 1px rgba(6,14,9,0.6),
+    inset 0 0 0 2px rgba(197,162,83,0.5),
+    inset 0 0 0 3px rgba(242,234,215,0.14);
+}
 .hero .eyebrow { margin-bottom: 2rem; }
 .hero__title {
   font-family: var(--ff-display);
@@ -267,19 +391,34 @@ main { position: relative; z-index: 2; }
 .hero__title .line { display: block; overflow: hidden; }
 .hero__title .word {
   display: inline-block;
-  background: linear-gradient(180deg, var(--ivory) 0%, var(--gold-hi) 60%, var(--gold) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--gold-hi); /* fallback: solid gilt if background-clip:text is unsupported */
+  background:
+    radial-gradient(24vmax 24vmax at var(--light-x, 50%) var(--light-y, 18%), rgba(255,253,246,0.55), rgba(255,250,235,0) 46%),
+    var(--noise-light),
+    linear-gradient(180deg, var(--ivory) 0%, var(--gold-hi) 60%, var(--gold) 100%);
+  background-attachment: fixed, scroll, scroll;
+  background-blend-mode: screen, overlay, normal;
+  /* the gilt lifts off the cover: a raised highlight and a cast shadow */
+  text-shadow:
+    0 -1px 0 rgba(255,244,214,0.28),
+    0 2px 5px rgba(4,10,7,0.5);
   transform: translateY(110%);
   animation: rise 1.1s var(--ease) forwards;
+}
+/* the gilded-foil wordmark — the one deliberate gradient-on-text, hero only */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero__title .word {
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 .hero__title .line:nth-child(2) .word { animation-delay: 0.12s; }
 @keyframes rise { to { transform: translateY(0); } }
 .hero__lead {
   font-size: clamp(1.15rem, 2.2vw, 1.5rem);
   line-height: 1.55;
-  color: var(--ivory-dim);
+  color: var(--ivory); /* full ivory — the one line sitting over the lit facade photo */
   max-width: 620px;
   margin: 0 auto 2.6rem;
   font-style: italic;
@@ -314,7 +453,7 @@ main { position: relative; z-index: 2; }
 /* ---------- Marquee ---------- */
 .marquee {
   position: relative; z-index: 2;
-  background: var(--green-900);
+  background: var(--leather-900);
   border-top: 1px solid rgba(197,162,83,0.18);
   border-bottom: 1px solid rgba(197,162,83,0.18);
   overflow: hidden;
@@ -352,8 +491,67 @@ main { position: relative; z-index: 2; }
   letter-spacing: 0.005em;
 }
 
+/* ---------- Plate: a tipped-in photograph, mounted on the leather page ---------- */
+.plate {
+  position: relative; z-index: 2;
+  padding: clamp(2.5rem, 7vh, 5.5rem) clamp(1.4rem, 5vw, 3rem);
+}
+.plate__mount { max-width: 1040px; margin: 0 auto; }
+.plate__photo {
+  position: relative;
+  aspect-ratio: 16 / 8;
+  border-radius: 2px;
+  /* fallback tone until the photograph fades in */
+  background:
+    repeating-linear-gradient(45deg, rgba(197,162,83,0.04) 0 2px, transparent 2px 10px),
+    radial-gradient(120% 120% at 32% 22%, #1c3b29, var(--green-900));
+  /* the plate lifts off the page */
+  box-shadow: 0 2px 0 rgba(255,244,214,0.06), 0 34px 60px -30px rgba(0,0,0,0.82);
+}
+.plate__photo::before { /* the real photograph, fades in on load */
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--photo);
+  background-size: cover; background-position: center 44%;
+  opacity: 0; transition: opacity 1.4s var(--ease);
+}
+.plate__photo.has-photo::before { opacity: 1; }
+.plate__photo::after { /* gilt tooled frame + a whisper of scrim, over any photo */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(6,14,9,0.6),
+    inset 0 0 0 2px rgba(197,162,83,0.5),
+    inset 0 0 0 3px rgba(255,244,214,0.12),
+    inset 0 0 100px rgba(6,14,9,0.42);
+}
+.plate__caption {
+  margin-top: 1.15rem;
+  text-align: center;
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  color: var(--ivory-dim);
+  letter-spacing: 0.01em;
+}
+
+/* ---------- Gilt seam: a page division between quiet sections ---------- */
+.seam {
+  position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: center; gap: 1.4rem;
+  max-width: var(--maxw); margin: 0 auto;
+  padding: clamp(1.4rem, 4vh, 2.8rem) clamp(1.4rem, 5vw, 3rem);
+}
+.seam::before, .seam::after {
+  content: ""; height: 1px; width: min(28vw, 260px);
+  background: linear-gradient(90deg, transparent, rgba(197,162,83,0.5));
+}
+.seam::after { transform: scaleX(-1); }
+.seam__mark {
+  color: var(--gold); font-size: 0.9rem; line-height: 1;
+  text-shadow: 0 -0.5px 0 var(--gilt-lit), 0 1px 1px var(--gilt-ink);
+}
+
 /* The Mansion */
-.mansion { background: var(--green-800); }
+.mansion { background: var(--leather-800); }
 .mansion__grid {
   display: grid;
   grid-template-columns: 1fr 1.1fr;
@@ -434,9 +632,9 @@ main { position: relative; z-index: 2; }
     repeating-linear-gradient(45deg, rgba(197,162,83,0.05) 0 2px, transparent 2px 9px);
   opacity: 0.7;
 }
-.room__plate[data-tone="1"] { background: radial-gradient(120% 120% at 30% 20%, #1c3b29, #0a1a12); }
+.room__plate[data-tone="1"] { background: radial-gradient(120% 120% at 30% 20%, #1c3b29, var(--green-900)); }
 .room__plate[data-tone="2"] { background: radial-gradient(120% 120% at 70% 30%, #16321f, #08160e); }
-.room__plate[data-tone="3"] { background: radial-gradient(120% 120% at 50% 80%, #24371f, #0a1a12); }
+.room__plate[data-tone="3"] { background: radial-gradient(120% 120% at 50% 80%, #24371f, var(--green-900)); }
 .room__plate[data-tone="4"] { background: radial-gradient(120% 120% at 40% 60%, #15302a, #08150f); }
 .room__mono {
   font-family: var(--ff-display);
@@ -827,18 +1025,68 @@ main { position: relative; z-index: 2; }
   background-size: cover;
   background-position: center 30%;
   opacity: 0;
-  transition: opacity 1.8s var(--ease), transform 16s ease-out;
+  transition: opacity 1.8s var(--ease);
 }
-.hero__photo.has-photo { opacity: 0.32; }
+.hero__photo.has-photo { opacity: 1; }
+/* light scrim: the house reads clearly; only a soft vignette + a foot of shade
+   behind the lower text keeps the ivory legible. */
 .hero__photo::after {
   content: "";
   position: absolute; inset: 0;
   background:
-    radial-gradient(120% 90% at 50% 30%, transparent 40%, rgba(8,18,12,0.7)),
-    linear-gradient(180deg, rgba(8,18,12,0.55), rgba(8,18,12,0.35) 50%, var(--green-800));
+    radial-gradient(115% 70% at 50% 40%, rgba(8,18,12,0.32) 0%, transparent 62%),
+    linear-gradient(180deg,
+      rgba(8,18,12,0.14) 0%,
+      rgba(8,18,12,0.08) 30%,
+      rgba(8,18,12,0.48) 74%,
+      var(--green-800) 100%);
 }
 .hero__inner { position: relative; z-index: 1; }
 .scroll-cue { z-index: 1; }
+/* the photo now shows at full strength — anchor the small type against bright sky */
+.hero .eyebrow,
+.hero__lead,
+.hero__address,
+.hero__season { text-shadow: 0 1px 16px rgba(6, 14, 9, 0.78); }
+
+/* ---------- Overdrive: cinematic scroll push-in ----------
+   As the reader scrolls through the first screen the photo dollies in and
+   darkens while the wordmark drifts up and dissolves — a slow camera move
+   into the house. Scroll-driven (no JS, no main-thread cost); the static
+   clear hero is the fallback where the timeline API or motion isn't wanted. */
+@keyframes hero-dolly {
+  from { transform: scale(1); filter: brightness(1); }
+  to   { transform: scale(1.16); filter: brightness(0.62); }
+}
+@keyframes hero-drift {
+  from { transform: translateY(0); opacity: 1; }
+  62%  { opacity: 0.92; }
+  to   { transform: translateY(-13%); opacity: 0; }
+}
+@keyframes hero-cue-fade { to { opacity: 0; } }
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__photo {
+      transform-origin: 50% 44%;
+      will-change: transform, filter;
+      animation: hero-dolly linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+    .hero__inner {
+      will-change: transform, opacity;
+      animation: hero-drift linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 78vh;
+    }
+    .scroll-cue {
+      animation: hero-cue-fade linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 22vh;
+    }
+  }
+}
 
 /* Room plates — the photo rises over the monogram */
 .room__plate::before {
@@ -892,8 +1140,37 @@ main { position: relative; z-index: 2; }
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   body { font-size: 18px; }
-  .nav__links { gap: 1rem; }
-  .nav__links a:not(.nav__reserve):not([href="#reserve"]) { display: none; }
+  .nav__links { gap: 0.8rem; }
+  .nav__toggle { display: inline-flex; }
+  /* the four section links drop out of the bar into a menu under the toggle */
+  .nav__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    position: absolute;
+    top: 100%;
+    right: clamp(1.2rem, 4vw, 3.2rem);
+    min-width: 15rem;
+    margin-top: 0.5rem;
+    padding: 0.7rem 1.1rem;
+    background: rgba(8, 22, 15, 0.96);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(197,162,83,0.25);
+    border-radius: 3px;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.85);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.32s var(--ease), transform 0.32s var(--ease), visibility 0s linear 0.32s;
+  }
+  .nav.is-menu-open .nav__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.32s var(--ease), transform 0.32s var(--ease);
+  }
+  .nav__menu a { display: block; padding: 0.7rem 0.1rem; font-size: 0.82rem; }
   .mansion__grid { grid-template-columns: 1fr; gap: 2rem; }
   .rooms__grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
   .libby__meta { grid-template-columns: 1fr; gap: 1.4rem; }
@@ -1002,7 +1279,7 @@ main { position: relative; z-index: 2; }
   width: min(620px, 100%);
   max-height: 92vh;
   overflow-y: auto;
-  background: linear-gradient(180deg, var(--green-700), var(--green-900));
+  background: linear-gradient(180deg, rgba(23,41,29,0.35), rgba(6,14,9,0.4)), var(--hide);
   border: 1px solid rgba(197,162,83,0.35);
   border-radius: 3px;
   padding: clamp(1.8rem, 5vw, 3.2rem);
@@ -1013,7 +1290,9 @@ main { position: relative; z-index: 2; }
 .modal.is-open .modal__panel { transform: none; }
 .modal__close {
   position: absolute;
-  top: 0.7rem; right: 1rem;
+  top: 0.5rem; right: 0.6rem;
+  width: 2.75rem; height: 2.75rem;
+  display: grid; place-items: center;
   background: none; border: none;
   color: var(--ivory-dim);
   font-size: 1.8rem;
@@ -1053,6 +1332,15 @@ main { position: relative; z-index: 2; }
 }
 .rform input:focus, .rform select:focus, .rform textarea:focus {
   outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(197,162,83,0.15);
+}
+/* the specific field(s) still waiting on the guest — silk, not alarm-red */
+.rform [aria-invalid="true"] {
+  border-color: var(--silk);
+  box-shadow: 0 0 0 3px rgba(138,31,46,0.18);
+}
+.rform [aria-invalid="true"]:focus {
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(197,162,83,0.15);
 }
@@ -1127,7 +1415,7 @@ main { position: relative; z-index: 2; }
 /* ---------- In Residence (the human counterweight) ---------- */
 .residence {
   position: relative; z-index: 2;
-  background: var(--green-900);
+  background: var(--leather-900);
   border-top: 1px solid rgba(197,162,83,0.14);
   border-bottom: 1px solid rgba(197,162,83,0.14);
 }
@@ -1203,7 +1491,9 @@ main { position: relative; z-index: 2; }
 }
 .rdraw.is-open .rdraw__panel { transform: none; }
 .rdraw__close {
-  position: absolute; top: 0.7rem; right: 1rem;
+  position: absolute; top: 0.5rem; right: 0.6rem;
+  width: 2.75rem; height: 2.75rem;
+  display: grid; place-items: center;
   background: none; border: none; color: var(--ivory-dim);
   font-size: 1.8rem; line-height: 1; cursor: pointer;
   transition: color 0.3s var(--ease);
@@ -1247,7 +1537,7 @@ main { position: relative; z-index: 2; }
 }
 
 /* ---------- Before You Come (the practical counter) ---------- */
-.plan { background: var(--green-800); }
+.plan { background: var(--leather-800); }
 .plan__title { color: var(--ivory); margin-bottom: 1.4rem; }
 .plan__note { color: var(--ivory-dim); font-size: 1.12rem; max-width: 46ch; margin: 0 0 3rem; }
 .plan__grid { display: grid; gap: 0; border-top: 1px solid rgba(197,162,83,0.2); }
@@ -1262,11 +1552,6 @@ main { position: relative; z-index: 2; }
   letter-spacing: 0.22em; font-size: 0.74rem; color: var(--gold-hi); margin: 0 0 0.7rem;
 }
 .plan__text p { margin: 0; color: var(--ivory-dim); font-size: 1.04rem; line-height: 1.55; max-width: 56ch; }
-.plan__confirm {
-  font-family: var(--ff-eyebrow); text-transform: uppercase;
-  letter-spacing: 0.16em; font-size: 0.62rem; color: var(--sage);
-  white-space: nowrap; opacity: 0.8;
-}
 @media (max-width: 640px) {
   .plan__row { grid-template-columns: 2.6rem 1fr; gap: 1rem; }
   .plan__num { font-size: 1.2rem; }
@@ -1274,7 +1559,7 @@ main { position: relative; z-index: 2; }
 
 /* ---------- Recognition (quiet engraved marks) ---------- */
 .recognition {
-  position: relative; z-index: 2; background: var(--green-900);
+  position: relative; z-index: 2; background: var(--leather-900);
   border-top: 1px solid rgba(197,162,83,0.14);
   border-bottom: 1px solid rgba(197,162,83,0.14);
 }
