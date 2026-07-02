@@ -9,6 +9,7 @@ import { initRoomDetail } from './room-detail.js'
 import { initRolodex } from './rolodex.js'
 import { initGallery } from './gallery.js'
 import { initIntro } from './intro.js'
+import { initScrollStory } from './scrollstory.js'
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -56,6 +57,9 @@ initRolodex()
 
 /* ---- The Gallery + lightbox ---- */
 initGallery()
+
+/* ---- Scroll story: pinned Season, typographic settle, count-ups, parallax ---- */
+initScrollStory()
 
 /* ---- Nav: solidify on scroll ---- */
 const nav = document.getElementById('nav')
