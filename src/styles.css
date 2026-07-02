@@ -42,7 +42,7 @@
   /* broad worn wash — rubbed-lighter high spots, darker aged hollows */
   --wear: radial-gradient(120% 90% at 32% 18%, rgba(224,232,214,0.05), transparent 46%),
           radial-gradient(140% 120% at 78% 96%, rgba(3,8,5,0.34), transparent 52%);
-  --leather-800: var(--wear), linear-gradient(rgba(7,18,12,0.34), rgba(7,18,12,0.34)), var(--mottle), var(--hide);
+  --leather-800: var(--wear), linear-gradient(rgba(7,18,12,0.40), rgba(7,18,12,0.40)), var(--mottle), var(--hide);
   --leather-900: linear-gradient(rgba(5,12,8,0.5), rgba(5,12,8,0.5)), var(--mottle), var(--hide);
   --leather-grain: var(--hide);
   /* white sparkle for the gold leaf */
@@ -142,9 +142,11 @@ img { max-width: 100%; display: block; }
 .sheen {
   position: absolute; inset: 0;
   mix-blend-mode: soft-light;
-  opacity: 0.45;
+  opacity: 0.30;
+  /* warm gold lamp, not white: white light halves the leather's saturation
+     (measured S45%→S22% under the old core); warm light tints instead */
   background: radial-gradient(46vmax 40vmax at var(--light-x, 50%) var(--light-y, 6%),
-    rgba(255,250,235,0.5) 0%, rgba(255,247,225,0.14) 32%, transparent 62%);
+    rgba(255,244,214,0.32) 0%, rgba(255,244,214,0.12) 32%, transparent 62%);
 }
 
 /* The light picks up the grain itself: the hide, colour-dodged, masked to the
@@ -152,7 +154,7 @@ img { max-width: 100%; display: block; }
 .sparkle {
   position: absolute; inset: 0;
   mix-blend-mode: color-dodge;
-  opacity: 0.09;
+  opacity: 0.06;
   background: var(--hide);
   -webkit-mask-image: radial-gradient(36vmax 32vmax at var(--light-x, 50%) var(--light-y, 6%), #000 0%, rgba(0,0,0,0.5) 36%, transparent 66%);
   mask-image: radial-gradient(36vmax 32vmax at var(--light-x, 50%) var(--light-y, 6%), #000 0%, rgba(0,0,0,0.5) 36%, transparent 66%);
@@ -163,7 +165,7 @@ img { max-width: 100%; display: block; }
 .handwear {
   position: absolute; inset: 0;
   mix-blend-mode: screen;
-  opacity: 0.55;
+  opacity: 0.30;
   background:
     radial-gradient(20vmax 13vmax at 97% 3%, rgba(214,226,204,0.055), transparent 62%),
     radial-gradient(15vmax 10vmax at 2% 98%, rgba(214,226,204,0.045), transparent 60%),
