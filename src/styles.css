@@ -1618,23 +1618,7 @@ main { position: relative; z-index: 2; }
   .intro--gone { transform: none; }
 }
 
-/* ---------- Gallery + lightbox ---------- */
-.gallery__grid { column-count: 3; column-gap: 14px; }
-@media (max-width: 860px) { .gallery__grid { column-count: 2; } }
-@media (max-width: 520px) { .gallery__grid { column-count: 1; } }
-.gallery__tile {
-  display: block; width: 100%; margin: 0 0 14px; padding: 0;
-  border: 1px solid rgba(197,162,83,0.18); border-radius: 2px;
-  background: var(--green-800); overflow: hidden; cursor: pointer;
-  break-inside: avoid; -webkit-column-break-inside: avoid;
-  transition: border-color 0.5s var(--ease), box-shadow 0.5s var(--ease), transform 0.5s var(--ease);
-}
-.gallery__tile:hover, .gallery__tile:focus-visible {
-  border-color: rgba(197,162,83,0.55);
-  box-shadow: 0 18px 50px -28px rgba(0,0,0,0.85); transform: translateY(-2px);
-}
-.gallery__img { display: block; width: 100%; height: auto; transition: transform 0.7s var(--ease), opacity 0.7s var(--ease); }
-.gallery__tile:hover .gallery__img { transform: scale(1.04); }
+/* ---------- Lightbox ---------- */
 .lightbox {
   position: fixed; inset: 0; z-index: 69;
   display: flex; align-items: center; justify-content: center;
@@ -1964,3 +1948,99 @@ main { position: relative; z-index: 2; }
   .season.is-pinned .timeline__item { position: relative; inset: auto; opacity: 1 !important; transform: none !important; padding: 1.4rem 0 2.6rem 2.4rem; }
   .season.is-pinned .sstory__rail { display: none; }
 }
+
+/* ========================================================================
+   The Gallery — pinned horizontal filmstrip
+   ======================================================================== */
+.gallery { overflow: visible; }
+.gallery__scroller {
+  overflow-x: auto;              /* base mode: a plain horizontal scroller */
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-top: clamp(1.6rem, 4vh, 3rem);
+}
+.gallery__scroller::-webkit-scrollbar { display: none; }
+.gallery__strip {
+  display: flex;
+  gap: clamp(0.9rem, 1.6vw, 1.4rem);
+  width: max-content;
+  will-change: transform;
+}
+.gallery__tile {
+  flex: 0 0 auto;
+  width: clamp(300px, 34vw, 520px);
+  height: clamp(300px, 52vh, 540px);
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(197, 162, 83, 0.22);
+  border-radius: 2px;
+  background: radial-gradient(120% 120% at 40% 25%, #1c3b29, #0a1a12);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.5s var(--ease), box-shadow 0.5s var(--ease);
+}
+.gallery__tile:hover,
+.gallery__tile:focus-visible {
+  border-color: rgba(197, 162, 83, 0.6);
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.85);
+}
+.gallery__img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease), transform 0.7s var(--ease);
+}
+.gallery__img[src] { opacity: 1; }
+.gallery__tile:hover .gallery__img { transform: scale(1.04); }
+
+/* the horizontal progress rule */
+.gallery__meter {
+  margin-top: clamp(1.2rem, 3vh, 2rem);
+  height: 1px;
+  background: rgba(197, 162, 83, 0.2);
+  overflow: hidden;
+}
+.gallery__bar {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-lo), var(--gold-hi));
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
+
+/* pinned mode: the engine drives the strip; native x-scroll is retired */
+.gallery.is-pinned { padding: 0; overflow: visible; }
+.gallery.is-pinned .gallery__pin { /* height set by JS: 100vh + strip travel */ }
+.gallery.is-pinned .gallery__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: none;
+  padding: clamp(3rem, 8vh, 5rem) clamp(1.4rem, 5vw, 3rem) clamp(2rem, 5vh, 3rem);
+}
+.gallery.is-pinned .section__label,
+.gallery.is-pinned h2 {
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+.gallery.is-pinned .gallery__scroller { overflow: visible; }
+.gallery.is-pinned .gallery__meter {
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+/* base (unpinned) mode never shows the meter — the scrollbar position is felt */
+.gallery:not(.is-pinned) .gallery__meter { display: none; }
+
+/* short screens: no pin (engine skips), strip stays a natural swiper */

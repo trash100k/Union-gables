@@ -55,11 +55,11 @@ document.querySelectorAll('.room').forEach((room) => {
 /* ---- The Rooms as a space-saving vertical rolodex ---- */
 initRolodex()
 
-/* ---- The Gallery + lightbox ---- */
-initGallery()
+/* ---- The Gallery + lightbox (filmstrip) ---- */
+const gallery = initGallery()
 
 /* ---- Scroll story: pinned Season, typographic settle, count-ups, parallax ---- */
-initScrollStory()
+initScrollStory({ gallery })
 
 /* ---- Nav: solidify on scroll ---- */
 const nav = document.getElementById('nav')

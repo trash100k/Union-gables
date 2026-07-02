@@ -17,7 +17,7 @@
 const clamp01 = (v) => Math.max(0, Math.min(1, v))
 const easeOut = (t) => 1 - Math.pow(1 - t, 3)
 
-export function initScrollStory() {
+export function initScrollStory(opts = {}) {
   if (typeof document === 'undefined') return
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -54,6 +54,35 @@ export function initScrollStory() {
 
       // the photograph breathes forward as the story runs
       if (photo) photo.style.transform = `scale(${1.06 + p * 0.1}) translateY(${p * -18}px)`
+    })
+  }
+
+
+  /* ---- 1b. The Gallery, pinned: vertical scroll drives the strip ------- */
+  const gal = opts.gallery
+  const gsec = document.getElementById('gallery')
+  const gpin = gsec?.querySelector('.gallery__pin')
+  if (gal && gsec && gpin && gal.strip) {
+    gsec.classList.add('is-pinned')
+    const bar = gsec.querySelector('.gallery__bar')
+    let maxShift = 0
+    const recalc = () => {
+      maxShift = Math.max(0, gal.strip.scrollWidth - gal.scroller.clientWidth)
+      // 1px of strip travel per ~0.55px of scroll — brisk but readable
+      gpin.style.height = `${window.innerHeight + Math.round(maxShift * 0.55)}px`
+    }
+    recalc()
+    window.addEventListener('resize', recalc)
+
+    jobs.push(() => {
+      const rect = gpin.getBoundingClientRect()
+      const span = rect.height - window.innerHeight
+      const p = clamp01(span > 0 ? -rect.top / span : 1)
+      const x = p * maxShift
+      gal.strip.style.transform = `translate3d(${-x}px, 0, 0)`
+      if (bar) bar.style.transform = `scaleX(${p})`
+      // promote only what approaches the window (transform defeats native lazy)
+      gal.ensureRange(x, x + gal.scroller.clientWidth)
     })
   }
 
