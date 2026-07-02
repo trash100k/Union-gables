@@ -14,20 +14,21 @@
 
 const CDN = 'https://www.uniongables.com/files-sbbasic/ba_uniongablesinn_us/'
 
-// Each named room -> its best CDN photograph.
+// Each named room -> its lead photograph, as it appears on the room's own page
+// on uniongables.com (verified per-page via Nimble, July 2026).
 const ROOMS = {
-  annie:    'union-gables-inn_annie-room_02.jpg',
-  kate:     'union-gables-inn_kate-room_01.jpg',
-  cindy:    'union-gables-inn_cindy-room_01.jpg',
-  edward:   'union-gables-inn_edward-room_01.jpg',
-  bill:     'union-gables-inn_bill-room_02.jpg',
-  bruce:    'union-gables-inn_bruce-room_02.jpg',
-  linda:    'union-gables-inn_linda-room_02.jpg',
-  tom:      'union-gables-inn_tom-room_02.jpg',
-  jane:     'union-gables-inn_jane-room_04.jpg',
-  jody:     'union-gables-inn_jody-room_02.jpg',
-  michael:  'union-gables-michael-room_03.jpg',
-  henry:    'henry_suite.jpg',
+  annie:    'annie1.jpg',
+  kate:     'kate.jpg',
+  cindy:    'cindy1.jpg',
+  edward:   'edward1.jpg',
+  bill:     'bill_room.jpg',
+  bruce:    'bruce2.jpg',
+  linda:    'linda1.jpg',
+  tom:      'tom1.jpg',
+  jane:     'jane_room1.jpg',
+  jody:     'jody_room.jpg',
+  michael:  'michael_room.jpg',
+  henry:    'henry_suite2.jpg',
   carriage: 'ch_living_area.jpg',
 }
 

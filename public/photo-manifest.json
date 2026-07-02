@@ -92,5 +92,89 @@
       "logo/_map-pin_union-gables-inn-saratoga-springs.png",
       "logo/_favicon_union-gables-inn-saratoga-springs.png"
     ]
+  },
+  "roomGalleriesVerified": {
+    "note": "Per-room galleries exactly as published on each room's page (extracted per-page via Nimble, 2026-07-02). First file is the room's lead image.",
+    "annie": [
+      "annie1.jpg",
+      "annie_bathroom.jpg",
+      "annie.jpg"
+    ],
+    "kate": [
+      "kate.jpg",
+      "kate1.jpg",
+      "kate3.jpg",
+      "kate_bathroom.jpg"
+    ],
+    "cindy": [
+      "cindy1.jpg",
+      "cindy.jpg",
+      "cindy3.jpg",
+      "cindy2.jpg",
+      "cindy4.jpg",
+      "cindy5.jpg",
+      "cindy_bathroom.jpg",
+      "cindy_porch.jpg"
+    ],
+    "edward": [
+      "edward1.jpg",
+      "edward.jpg",
+      "edward2.jpg",
+      "edward_bathroom.jpg"
+    ],
+    "bill": [
+      "bill_room.jpg",
+      "bill_room1.jpg",
+      "bill_room2.jpg",
+      "bill_bathroom.jpg",
+      "bill_porch.jpg"
+    ],
+    "bruce": [
+      "bruce2.jpg",
+      "bruce3.jpg",
+      "bruce.jpg",
+      "bruce1.jpg",
+      "bruce_bathroom.jpg"
+    ],
+    "linda": [
+      "linda1.jpg",
+      "linda.jpg",
+      "linda_room1.jpg",
+      "linda2.jpg",
+      "linda3.jpg"
+    ],
+    "tom": [
+      "tom1.jpg",
+      "tom2.jpg",
+      "tom3.jpg"
+    ],
+    "jane": [
+      "jane_room1.jpg",
+      "jane_room.jpg",
+      "jane_bathroom.jpg",
+      "jane_bathroom1.jpg"
+    ],
+    "jody": [
+      "jody_room.jpg",
+      "jody_room1.jpg",
+      "jody_room2.jpg",
+      "jody_room_bathroom.jpg"
+    ],
+    "michael": [
+      "michael_room.jpg",
+      "michael_room1.jpg",
+      "michael_bathroom.jpg"
+    ],
+    "henry": [
+      "henry_suite2.jpg",
+      "henry_suite1.jpg",
+      "henry_suite.jpg",
+      "henry_suite_bathroom.jpg",
+      "henry_suite3.jpg"
+    ],
+    "carriage": [
+      "ch_living_area.jpg",
+      "ch_bedroom1.jpg"
+    ]
   }
 }
