@@ -6,6 +6,7 @@ import { initSeason } from './season.js'
 import { initCursor } from './cursor.js'
 import { initLight } from './light.js'
 import { initRoomDetail } from './room-detail.js'
+import { initRolodex } from './rolodex.js'
 import { initGallery } from './gallery.js'
 import { initIntro } from './intro.js'
 
@@ -49,6 +50,9 @@ document.querySelectorAll('.room').forEach((room) => {
     })
   }
 })
+
+/* ---- The Rooms as a space-saving vertical rolodex ---- */
+initRolodex()
 
 /* ---- The Gallery + lightbox ---- */
 initGallery()

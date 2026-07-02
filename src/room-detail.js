@@ -10,18 +10,18 @@
 const CDN = 'https://www.uniongables.com/files-sbbasic/ba_uniongablesinn_us/'
 
 const GALLERIES = {
-  annie:    ['union-gables-inn_annie-room_02.jpg'],
-  kate:     ['union-gables-inn_kate-room_01.jpg', 'union-gables-inn_kate-room_03.jpg', 'kate.jpg'],
-  cindy:    ['union-gables-inn_cindy-room_01.jpg', 'cindy3.jpg'],
-  edward:   ['union-gables-inn_edward-room_01.jpg', 'edward.jpg'],
-  bill:     ['union-gables-inn_bill-room_02.jpg', 'bill_bathroom.jpg'],
-  bruce:    ['union-gables-inn_bruce-room_02.jpg', 'bruce1.jpg', 'bruce2.jpg'],
-  linda:    ['union-gables-inn_linda-room_02.jpg', 'linda1.jpg', 'linda2.jpg'],
-  tom:      ['union-gables-inn_tom-room_02.jpg', 'tom.jpg', 'tom2.jpg'],
-  jane:     ['union-gables-inn_jane-room_04.jpg'],
-  jody:     ['union-gables-inn_jody-room_02.jpg'],
-  michael:  ['union-gables-michael-room_03.jpg', 'michael_room.jpg'],
-  henry:    ['henry_suite.jpg', 'henry_suite1.jpg', 'henry_suite2.jpg', 'henry_suite3.jpg', 'henry_suite_bathroom.jpg'],
+  annie:    ['annie1.jpg', 'annie_bathroom.jpg', 'annie.jpg'],
+  kate:     ['kate.jpg', 'kate1.jpg', 'kate3.jpg', 'kate_bathroom.jpg'],
+  cindy:    ['cindy1.jpg', 'cindy.jpg', 'cindy3.jpg', 'cindy2.jpg', 'cindy4.jpg', 'cindy5.jpg', 'cindy_bathroom.jpg', 'cindy_porch.jpg'],
+  edward:   ['edward1.jpg', 'edward.jpg', 'edward2.jpg', 'edward_bathroom.jpg'],
+  bill:     ['bill_room.jpg', 'bill_room1.jpg', 'bill_room2.jpg', 'bill_bathroom.jpg', 'bill_porch.jpg'],
+  bruce:    ['bruce2.jpg', 'bruce3.jpg', 'bruce.jpg', 'bruce1.jpg', 'bruce_bathroom.jpg'],
+  linda:    ['linda1.jpg', 'linda.jpg', 'linda_room1.jpg', 'linda2.jpg', 'linda3.jpg'],
+  tom:      ['tom1.jpg', 'tom2.jpg', 'tom3.jpg'],
+  jane:     ['jane_room1.jpg', 'jane_room.jpg', 'jane_bathroom.jpg', 'jane_bathroom1.jpg'],
+  jody:     ['jody_room.jpg', 'jody_room1.jpg', 'jody_room2.jpg', 'jody_room_bathroom.jpg'],
+  michael:  ['michael_room.jpg', 'michael_room1.jpg', 'michael_bathroom.jpg'],
+  henry:    ['henry_suite2.jpg', 'henry_suite1.jpg', 'henry_suite.jpg', 'henry_suite_bathroom.jpg', 'henry_suite3.jpg'],
   carriage: ['ch_living_area.jpg', 'ch_bedroom1.jpg'],
 }
 

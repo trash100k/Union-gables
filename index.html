@@ -295,7 +295,11 @@
           Oversized chambers and suites, every one with its own bath, a natural-gas
           fireplace, and antiques chosen for the room rather than the catalogue.
         </p>
-        <div class="rooms__grid">
+        <div class="rolodex" data-rolodex tabindex="0" role="group" aria-roledescription="carousel" aria-label="The rooms, one at a time">
+          <button class="rolodex__nav rolodex__nav--prev" type="button" aria-label="Previous room"><span class="rolodex__chev"></span></button>
+          <div class="rolodex__viewport">
+            <div class="rolodex__frame" aria-hidden="true"></div>
+            <div class="rolodex__stage">
           <article class="room room--feature reveal">
             <div class="room__plate" data-tone="1" data-room="annie"><span class="room__mono">A</span></div>
             <h3 class="room__name">The Annie</h3>
@@ -419,7 +423,11 @@
             </p>
             <span class="room__tag">Two Rooms &middot; Living Area &middot; Most Private</span>
           </article>
+            </div>
+          </div>
+          <button class="rolodex__nav rolodex__nav--next" type="button" aria-label="Next room"><span class="rolodex__chev"></span></button>
         </div>
+        <p class="rolodex__meter reveal"><span class="rolodex__now">The Annie</span><span class="rolodex__count"><b class="rolodex__idx">1</b>&thinsp;/&thinsp;13</span></p>
         <p class="rooms__pets reveal">
           Eight rooms keep a place for the dog. Ask, and we'll make the bed for two and a half.
         </p>
