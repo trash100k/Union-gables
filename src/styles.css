@@ -2044,3 +2044,178 @@ main { position: relative; z-index: 2; }
 .gallery:not(.is-pinned) .gallery__meter { display: none; }
 
 /* short screens: no pin (engine skips), strip stays a natural swiper */
+
+/* ========================================================================
+   The Carte — Libby's menu card, with the supper-night photographs
+   ======================================================================== */
+.carte {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 380px);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  margin: clamp(2.4rem, 6vh, 4rem) 0 3rem;
+  outline: none;
+}
+.carte:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 6px; border-radius: 4px; }
+
+/* --- the card: cream ground, green ink, gold hairlines --- */
+.carte__cardwrap { justify-self: center; width: 100%; max-width: 380px; }
+.carte__card {
+  background: linear-gradient(178deg, #f4edda, #e9dfc4);
+  color: #143024;
+  border-radius: 2px;
+  padding: clamp(1.6rem, 3vw, 2.2rem) clamp(1.4rem, 2.6vw, 2rem);
+  box-shadow:
+    0 0 0 1px rgba(197,162,83,0.9),
+    0 0 0 5px rgba(10,26,18,0.9),
+    0 0 0 6px rgba(197,162,83,0.45),
+    0 34px 80px -30px rgba(0,0,0,0.85);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  transition: opacity 0.24s var(--ease), transform 0.24s var(--ease);
+}
+.carte__card.is-turning { opacity: 0; transform: rotateY(14deg) scale(0.985); }
+.carte__house {
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.34em;
+  font-size: 0.6rem;
+  color: #4a6a54;
+}
+.carte__month {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.7rem;
+  line-height: 1.1;
+}
+.carte__epigraph {
+  font-family: var(--ff-body);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: #4a6a54;
+}
+.carte__rule {
+  display: block;
+  height: 1px;
+  margin: 0.5rem auto;
+  width: 5.5rem;
+  background: linear-gradient(90deg, transparent, var(--gold-lo), transparent);
+}
+.carte__courses {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 0.45rem;
+}
+.carte__courses li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  font-family: var(--ff-body);
+  font-size: 1.02rem;
+  text-align: left;
+}
+.carte__courses i {
+  font-family: var(--ff-display);
+  font-style: italic;
+  color: var(--gold-lo);
+  min-width: 1.9rem;
+  text-align: right;
+}
+.carte__courses span { flex: 1; }
+.carte__courses li::after {
+  content: "";
+  order: 1;
+  flex: 0 1 2.6rem;
+  border-bottom: 1px dotted rgba(20,48,36,0.35);
+  transform: translateY(-0.28em);
+}
+.carte__foot {
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.58rem;
+  line-height: 1.9;
+  color: #4a6a54;
+}
+.carte__turns {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.1rem;
+}
+.carte__nav {
+  width: 2.4rem; height: 2.4rem;
+  display: grid; place-items: center;
+  background: none;
+  border: 1px solid rgba(197,162,83,0.45);
+  border-radius: 50%;
+  color: var(--gold-hi);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+.carte__nav:hover:not(:disabled) { background: var(--gold); color: var(--green-900); }
+.carte__nav:disabled { opacity: 0.3; cursor: default; }
+.carte__note {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--sage);
+}
+
+/* --- the tipped-in supper photographs --- */
+.carte__plates {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.9rem, 2vw, 1.4rem);
+}
+.carte__plate {
+  margin: 0;
+  background: var(--green-900);
+  border: 1px solid rgba(197,162,83,0.3);
+  padding: 0.5rem 0.5rem 0.7rem;
+  border-radius: 2px;
+  box-shadow: 0 22px 50px -26px rgba(0,0,0,0.85);
+  transition: transform 0.5s var(--ease), border-color 0.5s var(--ease);
+}
+.carte__plate--1 { transform: rotate(-1.6deg); }
+.carte__plate--2 { transform: rotate(1.2deg) translateY(0.9rem); }
+.carte__plate--3 { transform: rotate(1.8deg) translateY(-0.4rem); }
+.carte__plate--4 { transform: rotate(-1.1deg) translateY(0.5rem); }
+.carte__plate:hover { transform: rotate(0deg) scale(1.03); border-color: rgba(197,162,83,0.65); z-index: 2; }
+.carte__plate img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 1px;
+  background: radial-gradient(120% 120% at 40% 25%, #1c3b29, #0a1a12);
+  opacity: 0;
+  transition: opacity 0.8s var(--ease);
+}
+.carte__plate img[src] { opacity: 1; }
+.carte__plate figcaption {
+  margin-top: 0.55rem;
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.56rem;
+  color: var(--gold-hi);
+  text-align: center;
+}
+
+@media (max-width: 880px) {
+  .carte { grid-template-columns: 1fr; }
+  .carte__cardwrap { order: -1; }
+  .carte__plates { max-width: 480px; margin: 0 auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .carte__card, .carte__plate, .carte__plate img { transition: none; }
+  .carte__card.is-turning { opacity: 1; transform: none; }
+  .carte__plate--1, .carte__plate--2, .carte__plate--3, .carte__plate--4 { transform: none; }
+}

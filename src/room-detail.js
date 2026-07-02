@@ -22,7 +22,7 @@ const GALLERIES = {
   jody:     ['jody_room.jpg', 'jody_room1.jpg', 'jody_room2.jpg', 'jody_room_bathroom.jpg'],
   michael:  ['michael_room.jpg', 'michael_room1.jpg', 'michael_bathroom.jpg'],
   henry:    ['henry_suite2.jpg', 'henry_suite1.jpg', 'henry_suite.jpg', 'henry_suite_bathroom.jpg', 'henry_suite3.jpg'],
-  carriage: ['ch_living_area.jpg', 'ch_bedroom1.jpg'],
+  carriage: ['carriage_house.jpg', 'ch_living_area.jpg', 'ch_living_area1.jpg', 'ch_bedroom.jpg', 'ch_bedroom1.jpg', 'ch_bedroom2.jpg', 'ch_kitchen.jpg', 'ch_kitchen1.jpg', 'ch_bathroom.jpg', 'ch_bathroom1.jpg', 'ch_bathroom2.jpg'],
 }
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches

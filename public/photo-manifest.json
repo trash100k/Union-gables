@@ -173,8 +173,31 @@
       "henry_suite3.jpg"
     ],
     "carriage": [
+      "carriage_house.jpg",
       "ch_living_area.jpg",
-      "ch_bedroom1.jpg"
+      "ch_living_area1.jpg",
+      "ch_bedroom.jpg",
+      "ch_bedroom1.jpg",
+      "ch_bedroom2.jpg",
+      "ch_kitchen.jpg",
+      "ch_kitchen1.jpg",
+      "ch_bathroom.jpg",
+      "ch_bathroom1.jpg",
+      "ch_bathroom2.jpg"
     ]
+  },
+  "libbyAssets": {
+    "note": "From the Libby Gallery / Contact pages (extracted 2026-07-02). Supper-night photographs with real dates; two brand marks.",
+    "supperNights": [
+      "img_20250622_091251.jpg",
+      "img_20250828_102009_552.jpg",
+      "img_20250829_135518_634.jpg",
+      "img_3076.jpg"
+    ],
+    "brand": [
+      "libbyiglogo.jpg",
+      "libbylogo1.png"
+    ],
+    "facts": "Dinners typically 6:00 PM, last weekend of the month, one seating per night; served in unison, one course at a time; menus rotate monthly (regional purveyors); holiday additions occasionally."
   }
 }
