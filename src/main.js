@@ -10,6 +10,7 @@ import { initRolodex } from './rolodex.js'
 import { initGallery } from './gallery.js'
 import { initIntro } from './intro.js'
 import { initScrollStory } from './scrollstory.js'
+import { initCarte } from './carte.js'
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -60,6 +61,9 @@ const gallery = initGallery()
 
 /* ---- Scroll story: pinned Season, typographic settle, count-ups, parallax ---- */
 initScrollStory({ gallery })
+
+/* ---- The Carte: Libby's menu card + supper-night photographs ---- */
+initCarte()
 
 /* ---- Nav: solidify on scroll ---- */
 const nav = document.getElementById('nav')

@@ -29,7 +29,7 @@ const ROOMS = {
   jody:     'jody_room.jpg',
   michael:  'michael_room.jpg',
   henry:    'henry_suite2.jpg',
-  carriage: 'ch_living_area.jpg',
+  carriage: 'carriage_house.jpg',
 }
 
 // Section backgrounds and grounds plates.
