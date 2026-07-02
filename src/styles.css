@@ -260,6 +260,8 @@ main { position: relative; z-index: 2; }
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  text-shadow: none; /* inherited gilt shadow ghosts behind the clipped fill */
+  filter: drop-shadow(0 1px 1px rgba(3, 9, 6, 0.55));
 }
 @supports not (background-clip: text) {
   .section__label span { background: none; color: var(--ivory-dim); }
@@ -305,6 +307,14 @@ main h2.display {
     0 -1px 1px rgba(3, 9, 6, 0.78),
     0 1px 0 rgba(255, 244, 210, 0.16),
     0 3px 7px rgba(3, 9, 6, 0.28);
+}
+/* gold titles are foil, not blind emboss — raised, never dark-topped */
+main h2.libby__title,
+main h2.season__title {
+  text-shadow:
+    0 -1px 0 rgba(255, 244, 214, 0.3),
+    0 1px 1px rgba(3, 9, 6, 0.7),
+    0 2px 5px rgba(3, 9, 6, 0.45);
 }
 
 /* ---------- Buttons ---------- */
@@ -509,6 +519,11 @@ main h2.display {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    /* text-shadow paints the glyph silhouette BEHIND a transparent fill —
+       ghost letters. drop-shadow runs post-paint and follows the clip. */
+    text-shadow: none;
+    filter: drop-shadow(0 -1px 0 rgba(255, 244, 214, 0.26))
+            drop-shadow(0 2px 2px rgba(4, 10, 7, 0.55));
   }
 }
 .hero__title .line:nth-child(2) .word { animation-delay: 0.12s; }
