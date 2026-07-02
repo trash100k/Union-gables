@@ -30,7 +30,11 @@
      through a single top-left light. Highlights and shadows come from the same
      bumps, so it reads as one coherent worn hide instead of stacked noise. Baked
      green so every surface is the same book. */
-  --hide: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='460' height='460'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.016' numOctaves='5' seed='11' stitchTiles='stitch' result='n'/%3E%3CfeDiffuseLighting in='n' surfaceScale='3.2' diffuseConstant='1.15' lighting-color='%231a3b28'%3E%3CfeDistantLight azimuth='235' elevation='38'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23h)'/%3E%3C/svg%3E");
+  /* Baked pebbled morocco (920px tile shown at 460 = retina), seam-checked.
+     Rendered once from the tuned turbulence recipe — no live SVG filter cost,
+     no per-browser turbulence differences, no crunch. */
+  --hide: -webkit-image-set(url('/leather.jpg') 2x);
+  --hide: image-set(url('/leather.jpg') 2x);
   /* broad worn wash — rubbed-lighter high spots, darker aged hollows */
   --wear: radial-gradient(120% 90% at 32% 18%, rgba(224,232,214,0.05), transparent 46%),
           radial-gradient(140% 120% at 78% 96%, rgba(3,8,5,0.34), transparent 52%);
@@ -128,6 +132,57 @@ img { max-width: 100%; display: block; }
     rgba(255,250,235,0.5) 0%, rgba(255,247,225,0.14) 32%, transparent 62%);
 }
 
+/* The light picks up the grain itself: the hide, colour-dodged, masked to the
+   light pool — pebbles sparkle as the lamp passes over them. */
+.sparkle {
+  position: absolute; inset: 0;
+  mix-blend-mode: color-dodge;
+  opacity: 0.09;
+  background: var(--hide);
+  -webkit-mask-image: radial-gradient(36vmax 32vmax at var(--light-x, 50%) var(--light-y, 6%), #000 0%, rgba(0,0,0,0.5) 36%, transparent 66%);
+  mask-image: radial-gradient(36vmax 32vmax at var(--light-x, 50%) var(--light-y, 6%), #000 0%, rgba(0,0,0,0.5) 36%, transparent 66%);
+}
+
+/* Hand-wear: the rubbed-lighter spots where a kept book is actually held —
+   the corners and the reading edge. Screen-blended, barely there. */
+.handwear {
+  position: absolute; inset: 0;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  background:
+    radial-gradient(20vmax 13vmax at 97% 3%, rgba(214,226,204,0.055), transparent 62%),
+    radial-gradient(15vmax 10vmax at 2% 98%, rgba(214,226,204,0.045), transparent 60%),
+    radial-gradient(20vmax 12vmax at 98% 97%, rgba(214,226,204,0.05), transparent 62%),
+    radial-gradient(9vmax 30vmax at 100% 50%, rgba(214,226,204,0.04), transparent 70%);
+}
+
+/* The gilded fore-edge: the page-block of the closed book, down the right
+   side. Its bright band rides --scrollp — your place in the book. */
+.foredge {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 7px;
+  z-index: 55;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(120,92,36,0.9) 0%,
+      rgba(197,162,83,0.95) calc(var(--scrollp, 0) * 100% - 12%),
+      rgba(255,246,214,1) calc(var(--scrollp, 0) * 100%),
+      rgba(197,162,83,0.95) calc(var(--scrollp, 0) * 100% + 12%),
+      rgba(120,92,36,0.9) 100%);
+  box-shadow: inset 1px 0 0 rgba(6,14,9,0.65), inset 2px 0 3px rgba(6,14,9,0.4);
+}
+.foredge::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--noise-light);
+  background-size: 160px 160px;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+@media (max-width: 900px) { .foredge { display: none; } }
+
 /* ---------- Three.js canvas ---------- */
 #gilded-canvas {
   position: fixed;
@@ -179,6 +234,22 @@ main { position: relative; z-index: 2; }
 }
 .section__label--light { color: var(--gold-hi); }
 
+/* The numerals are leafed: a light band crosses each once as its section
+   arrives (background-position driven by the scroll engine). */
+.section__label span {
+  background:
+    linear-gradient(105deg, rgba(255,248,228,0) 38%, rgba(255,250,236,0.9) 50%, rgba(255,248,228,0) 62%),
+    linear-gradient(180deg, var(--ivory) 0%, var(--gold-hi) 55%, var(--gold) 100%);
+  background-size: 320% 100%, 100% 100%;
+  background-position: var(--leafp, 120%) 0, 0 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@supports not (background-clip: text) {
+  .section__label span { background: none; color: var(--ivory-dim); }
+}
+
 /* ---------- Gilt tooling: every gold line & letter raised + stamped into the hide.
    Highlight up-left (lit), shadow down-right (raised gold), soft dark halo (the hide
    folding down toward the gilt). One light direction, shared with the leather. ---------- */
@@ -208,6 +279,17 @@ main { position: relative; z-index: 2; }
 /* gilt rules pressed into the hide — highlight below, shadow above */
 .section__label::after {
   box-shadow: 0 -1px 1px rgba(3,9,6,0.6), 0 1px 0 rgba(255,244,210,0.18);
+}
+
+/* ---------- Blind deboss: the big display lines are pressed INTO the hide.
+   Dark above the glyph (the top wall light can't reach), a warm lip below
+   where the depression catches it. The die is fixed — these shadows never
+   move; only the sheen and glint travel. ---------- */
+main h2.display {
+  text-shadow:
+    0 -1px 1px rgba(3, 9, 6, 0.78),
+    0 1px 0 rgba(255, 244, 210, 0.16),
+    0 3px 7px rgba(3, 9, 6, 0.28);
 }
 
 /* ---------- Buttons ---------- */

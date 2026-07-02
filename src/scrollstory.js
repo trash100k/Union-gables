@@ -170,6 +170,25 @@ export function initScrollStory(opts = {}) {
     })
   })
 
+  /* ---- 5. Gold that moves with the page --------------------------------- */
+  // the fore-edge band rides overall progress
+  const rootStyle = document.documentElement.style
+  jobs.push(() => {
+    const h = document.documentElement
+    const max = h.scrollHeight - h.clientHeight
+    rootStyle.setProperty('--scrollp', String(max > 0 ? window.scrollY / max : 0))
+  })
+  // each leafed numeral gets one light-band pass as its section crosses the viewport
+  const numerals = [...document.querySelectorAll('.section__label span')]
+  numerals.forEach((n) => {
+    jobs.push(() => {
+      const r = n.getBoundingClientRect()
+      if (r.bottom < -80 || r.top > window.innerHeight + 80) return
+      const p = clamp01((window.innerHeight * 0.92 - r.top) / (window.innerHeight * 0.6))
+      n.style.setProperty('--leafp', `${120 - p * 240}%`)
+    })
+  })
+
   /* ---- the engine: one rAF per scrolled frame --------------------------- */
   let ticking = false
   const frame = () => { jobs.forEach((j) => j()); ticking = false }
