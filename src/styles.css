@@ -1686,3 +1686,197 @@ main { position: relative; z-index: 2; }
 .journal__head { font-family: var(--ff-display); font-weight: 400; font-size: clamp(1.5rem, 2.6vw, 1.95rem); line-height: 1.08; margin: 0.85rem 0 0.9rem; color: var(--ivory); }
 .journal__entry p { margin: 0; color: var(--ivory-dim); font-size: 1.02rem; line-height: 1.62; }
 @media (max-width: 880px) { .journal__grid { grid-template-columns: 1fr; } }
+
+/* ========================================================================
+   The Rooms — vertical rolodex with a gilded frame (space-saving)
+   ======================================================================== */
+.rolodex {
+  --card-w: min(600px, 94%);
+  --card-h: clamp(360px, 52vh, 430px);
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3.6rem 0;
+  outline: none;
+}
+.rolodex:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 8px; border-radius: 4px; }
+
+.rolodex__viewport {
+  position: relative;
+  height: calc(var(--card-h) + 150px);
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
+}
+.rolodex__stage {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  /* cards emerge from a slot — fade at top and bottom edges */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+}
+
+/* The static gilded frame the front card sits within */
+.rolodex__frame {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: var(--card-w);
+  height: var(--card-h);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 6;
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 5px var(--green-900),
+    0 0 0 6px rgba(197,162,83,0.65),
+    0 0 0 10px var(--green-900),
+    0 0 0 11px rgba(197,162,83,0.28),
+    0 34px 90px -34px rgba(0,0,0,0.85);
+}
+.rolodex__frame::before {
+  content: "";
+  position: absolute; inset: 6px;
+  border: 1px solid rgba(197,162,83,0.4);
+  border-radius: 2px;
+}
+/* four corner gilt ticks */
+.rolodex__frame::after {
+  content: "";
+  position: absolute; inset: 3px;
+  background:
+    linear-gradient(var(--gold-hi), var(--gold-hi)) left  top    / 16px 2px no-repeat,
+    linear-gradient(var(--gold-hi), var(--gold-hi)) left  top    / 2px 16px no-repeat,
+    linear-gradient(var(--gold-hi), var(--gold-hi)) right top    / 16px 2px no-repeat,
+    linear-gradient(var(--gold-hi), var(--gold-hi)) right top    / 2px 16px no-repeat,
+    linear-gradient(var(--gold-hi), var(--gold-hi)) left  bottom / 16px 2px no-repeat,
+    linear-gradient(var(--gold-hi), var(--gold-hi)) left  bottom / 2px 16px no-repeat,
+    linear-gradient(var(--gold-hi), var(--gold-hi)) right bottom / 16px 2px no-repeat,
+    linear-gradient(var(--gold-hi), var(--gold-hi)) right bottom / 2px 16px no-repeat;
+  opacity: 0.9;
+}
+
+/* Each card overrides the grid-era .room styles */
+.rolodex__card {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: var(--card-w);
+  height: var(--card-h);
+  margin: 0;
+  padding: clamp(0.9rem, 2.2vw, 1.4rem);
+  display: grid;
+  grid-template-columns: 44% 1fr;
+  grid-template-rows: auto 1fr auto auto;
+  column-gap: clamp(1rem, 2.4vw, 1.7rem);
+  align-content: start;
+  border: none;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #16321f, #0b1c12);
+  backface-visibility: hidden;
+  transform: translate(-50%, -50%);
+  transition: transform 0.6s var(--ease), opacity 0.6s var(--ease);
+  will-change: transform, opacity;
+}
+.rolodex__card:hover { transform: translate(-50%, -50%); } /* neutralise the grid hover-lift */
+.rolodex__card.is-peek { cursor: pointer; }
+
+.rolodex__card .room__plate {
+  grid-column: 1; grid-row: 1 / -1;
+  aspect-ratio: auto;
+  height: 100%;
+  margin: 0;
+}
+.rolodex__card .room__name { grid-column: 2; grid-row: 1; margin: 0.2rem 0 0.5rem; }
+.rolodex__card .room__desc {
+  grid-column: 2; grid-row: 2;
+  margin: 0;
+  font-size: 0.98rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+.rolodex__card .room__tag { grid-column: 2; grid-row: 3; margin-top: 0.9rem; }
+.rolodex__card .room__reserve {
+  grid-column: 2; grid-row: 4;
+  margin-top: 1rem;
+  opacity: 0;
+  transform: none;
+}
+/* the front card always shows its way in (no hover needed on touch) */
+.rolodex__card.is-active .room__reserve { opacity: 1; transform: none; }
+.rolodex__card.is-active .room__mono { color: rgba(231,207,148,0.5); }
+
+/* Navigation arrows, top and bottom centre */
+.rolodex__nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  width: 3rem; height: 3rem;
+  display: grid; place-items: center;
+  background: rgba(10,26,18,0.7);
+  border: 1px solid rgba(197,162,83,0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.35s var(--ease), border-color 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.rolodex__nav:hover { background: var(--gold); border-color: var(--gold); }
+.rolodex__nav--prev { top: 0; }
+.rolodex__nav--next { bottom: 0; }
+.rolodex__chev {
+  width: 12px; height: 12px;
+  border-right: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+  transition: border-color 0.35s var(--ease);
+}
+.rolodex__nav:hover .rolodex__chev { border-color: var(--green-900); }
+.rolodex__nav--prev .rolodex__chev { transform: rotate(-135deg); margin-top: 4px; }
+.rolodex__nav--next .rolodex__chev { transform: rotate(45deg); margin-bottom: 4px; }
+
+/* Caption under the wheel: which room, and where in the deck */
+.rolodex__meter {
+  margin: 1.6rem 0 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.rolodex__now {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--ivory);
+}
+.rolodex__count {
+  font-family: var(--ff-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.66rem;
+  color: var(--gold);
+}
+.rolodex__idx { color: var(--gold-hi); }
+
+@media (max-width: 560px) {
+  .rolodex {
+    --card-w: min(420px, 96%);
+    --card-h: clamp(440px, 74vh, 560px);
+  }
+  .rolodex__card {
+    grid-template-columns: 1fr;
+    grid-template-rows: 42% auto auto auto;
+    row-gap: 0.5rem;
+  }
+  .rolodex__card .room__plate { grid-column: 1; grid-row: 1; height: 100%; }
+  .rolodex__card .room__name { grid-column: 1; grid-row: 2; }
+  .rolodex__card .room__desc { grid-column: 1; grid-row: 3; -webkit-line-clamp: 3; }
+  .rolodex__card .room__tag { grid-column: 1; grid-row: 4; margin-top: 0.5rem; }
+  .rolodex__card .room__reserve { grid-column: 1; grid-row: 5; }
+  .rolodex__now { font-size: 1.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rolodex__card { transition: opacity 0.2s linear; }
+  .rolodex__stage { -webkit-mask-image: none; mask-image: none; }
+}
