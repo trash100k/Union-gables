@@ -1,0 +1,13 @@
+{
+  "name": "flashread",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RSVP speed reader — paste any chat or text, or select anything on the page, and read it one word at a time at a speed you choose.",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.61.1"
+  }
+}
